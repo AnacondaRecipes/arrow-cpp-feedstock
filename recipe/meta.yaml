@@ -94,7 +94,7 @@ outputs:
         - libutf8proc
         - lz4-c
         - numpy
-        - numpy-devel {{ numpy}}
+        - numpy-devel {{ numpy }}
         - orc  # [unix]
         - python
         - rapidjson
@@ -184,7 +184,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - numpy-devel {{ numpy}}
+        - numpy-devel {{ numpy }}                # [build_platform != target_platform]
         - cmake
         - ninja
         - make  # [unix]
@@ -258,7 +258,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - numpy-devel {{ numpy}}
+        - numpy-devel {{ numpy }}                # [build_platform != target_platform]
         - cmake
         - ninja
         - make  # [unix]
