@@ -1,5 +1,25 @@
-cuda_compiler: nvcc
+#    this differs from target_platform in that it determines what subdir the compiler
+#    will target, not what subdir the compiler package will be itself.
+#    For example, we need a win-64 vs2008_win-32 package, so that we compile win-32
+#    code on win-64 miniconda.
+CMAKE_GENERATOR:               # [win]
+  - NMake Makefiles            # [win]
+
+cuda_compiler:                 # [linux64]
+  - nvcc                       # [linux64]
 cuda_compiler_version:
   - None
-  #- 9.2      # [linux]
-  #- 10.0     # [win]
+  - 9.2                        # [linux64]
+  - 9.2                        # [linux64]
+  - 9.2                        # [linux64]
+  - 9.2                        # [linux64]
+cudnn:
+  - undefined
+  - 7                          # [linux64]
+  - 7                          # [linux64]
+  - 7                          # [linux64]
+  - 7                          # [linux64]
+
+zip_keys:
+    - cudnn                     # [linux64]
+    - cuda_compiler_version     # [linux64]
