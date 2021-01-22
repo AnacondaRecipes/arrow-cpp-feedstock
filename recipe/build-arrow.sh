@@ -43,6 +43,8 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON"
 fi
 
+export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib"
+
 cmake \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -77,8 +79,17 @@ cmake \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc \
+    -DTHREADS_PREFER_PTHREAD_FLAG=ON \
+    -DARROW_EXTRA_ERROR_CONTEXT=ON \
+    -DPYTHON_EXECUTABLE="${PYTHON}"  \
+    -DPYTHON_INCLUDE_DIR:PATH=$(${PYTHON} -c 'from sysconfig import get_paths; print(get_paths()["include"])')  \
+    -DPYTHON_LIBRARIES="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
+    -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
+    -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
+    -DPYTHON_VERSION=${PY_VER}  \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
+    --debug-find \
     ..
 
 # Commented out until jemalloc and mimalloc are fixed upstream
