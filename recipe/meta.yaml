@@ -20,7 +20,7 @@ build:
   number: 18
   # for cuda on linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
-  skip: true  # [linux and cuda_compiler_version not in ("None", "9.2")]
+  skip: true  # [linux and cuda_compiler_version not in ("None", "9.2") and py39]
   # same for cuda on windows (but starting from 10.0)
   skip: true  # [win and cuda_compiler_version not in ("None", "10.0")]
   skip: true  # [osx and cuda_compiler_version != "None"]
@@ -53,14 +53,19 @@ outputs:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports:
         - cudatoolkit
-      track_features:
+        track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
+        - abseil-cpp
         - python                                 # [build_platform != target_platform]
+        - clangdev 10                            # [not (osx and arm64)]
+        - clang-tools 10                         # [not (osx and arm64)]
+        - libclang 10                            # [not (osx and arm64)]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
+        - numpy-devel  {{ numpy }}
         - gnuconfig                              # [osx and arm64]
         - libprotobuf
         - grpc-cpp
@@ -72,6 +77,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
+        - absl-py
         - aws-sdk-cpp
         - boost-cpp >=1.70
         - brotli
@@ -82,10 +88,13 @@ outputs:
         - grpc-cpp
         - libprotobuf
         - clangdev 10  # [not (osx and arm64)]
+        - clang-tools 10  # [not (osx and arm64)]
+        - libclang 10  # [not (osx and arm64)]
         - llvmdev 10   # [not (osx and arm64)]
         - libutf8proc
         - lz4-c
         - numpy
+        - numpy-devel  {{ numpy }}
         - orc  # [unix]
         - python
         - rapidjson
@@ -175,6 +184,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
+        - numpy-devel {{ numpy }}
         - cmake
         - ninja
         - make  # [unix]
@@ -186,6 +196,7 @@ outputs:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - cython
         - numpy
+        - numpy-devel  {{ numpy }}
         - python
         - setuptools
         - setuptools_scm
@@ -247,6 +258,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
+        - numpy-devel {{ numpy }}
         - cmake
         - ninja
         - make  # [unix]
@@ -259,7 +271,7 @@ outputs:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - cython
         - numpy
-        - python
+        - numpy-devel  {{ numpy }}
         - setuptools
         - setuptools_scm
         - six

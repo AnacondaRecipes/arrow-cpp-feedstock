@@ -10,14 +10,8 @@ cuda_compiler:                 # [linux64]
 cuda_compiler_version:
   - None
   - 9.2                        # [linux64]
-  - 9.2                        # [linux64]
-  - 9.2                        # [linux64]
-  - 9.2                        # [linux64]
 cudnn:
   - undefined
-  - 7                          # [linux64]
-  - 7                          # [linux64]
-  - 7                          # [linux64]
   - 7                          # [linux64]
 
 zip_keys:

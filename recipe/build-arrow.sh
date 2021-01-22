@@ -3,7 +3,7 @@
 set -e
 set -x
 
-mkdir cpp/build
+mkdir -p cpp/build
 pushd cpp/build
 
 EXTRA_CMAKE_ARGS=""
@@ -50,6 +50,7 @@ cmake \
     -DARROW_BUILD_TESTS=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
     -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_DEPS=ON \
     -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FLIGHT=ON \
