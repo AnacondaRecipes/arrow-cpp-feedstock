@@ -1,0 +1,5 @@
+cuda_compiler: nvcc
+cuda_compiler_version:
+  - None
+  #- 9.2      # [linux]
+  #- 10.0     # [win]
