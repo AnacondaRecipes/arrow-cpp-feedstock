@@ -26,6 +26,10 @@ build:
   skip: true  # [osx and cuda_compiler_version != "None"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
+requirements:
+  build:
+    - patch  # [unix]
+    - m2-patch  # [win]
 
 outputs:
   - name: arrow-cpp-proc
@@ -195,6 +199,7 @@ outputs:
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - cython
+        - gflags
         - numpy
         - numpy-devel {{ numpy}}
         - python
