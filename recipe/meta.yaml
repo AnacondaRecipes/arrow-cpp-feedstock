@@ -1,6 +1,6 @@
-{% set version = "0.16.0" %}
+{% set version = "2.0.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "261992de4029a1593195ff4000501503bd403146471b3168bd2cc414ad0fb7f5" %}
+{% set checksum = "be0342cc847bb340d86aeaef43596a0b6c1dbf1ede9c789a503d939e01c71fbe" %}
 
 package:
   name: arrow-cpp
@@ -24,6 +24,10 @@ requirements:
     - ninja
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - utf8proc
+    - numpy-devel >=1.14
+    - libboost
+    - thrift-cpp >=0.13
   host:
     - boost-cpp
     - brotli
@@ -38,15 +42,17 @@ requirements:
     - lz4-c
     - numpy
     - orc  # [unix]
-    - python
     - rapidjson
     - re2
     - snappy
-    - thrift-cpp >=0.11
+    - thrift-cpp >=0.13
     - uriparser
     - zlib
     - zstd
-
+    - utf8proc
+    - openssl
+    - libevent  # [unix]
+    - python
   run:
     - {{ pin_compatible('numpy', lower_bound='1.11') }}
     - boost-cpp
@@ -59,12 +65,13 @@ requirements:
     - lz4-c
     - libboost
     - openssl
-    - python
     - re2
     - snappy
     - uriparser
     - zlib
     - zstd
+    - utf8proc
+    - python
 
 test:
   commands:
