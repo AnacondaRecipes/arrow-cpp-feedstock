@@ -13,15 +13,26 @@ source:
 
 build:
   number: 0
-  skip: true  # [win and vc<14]
+  skip: true  # [(win and vc<14) or win-32]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
-
+  ignore_run_exports:
+    - grpc-cpp
+    - libevent
+    - re2
+    - glog
+    - gflags  # [win]
+    - zstd    # [win]
+    - snappy  # [win]
+    - brotli  # [win]
+    - libthrift  # [win]
+    - lz4-c   # [win]
 requirements:
   build:
     - cmake
     - autoconf  # [unix]
     - ninja
+    - make      # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - utf8proc
