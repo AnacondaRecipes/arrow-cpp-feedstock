@@ -25,6 +25,8 @@ cmake -G "Ninja" ^
       -DARROW_WITH_ZLIB:BOOL=ON ^
       -DARROR_WITH_ZSTD:BOOL=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
+      -DCMAKE_C_FLAGS="%CFLAGS% -D_WIN32_WINNT=0x600" ^
+      -DCMAKE_CXX_FLAGS="%CXXFLAGS% -D_WIN32_WINNT=0x600" ^
       ..
 
 cmake --build . --target install --config Release
