@@ -21,6 +21,8 @@ build:
     - libevent
     - re2
     - glog
+    - zlib
+    - python
     - gflags  # [win]
     - zstd    # [win]
     - snappy  # [win]
