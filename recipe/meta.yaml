@@ -29,9 +29,12 @@ build:
     - brotli  # [win]
     - libthrift  # [win]
     - lz4-c   # [win]
+    - c-ares
+    - openssl
+
 requirements:
   build:
-    - abseil-cpp  # [win]
+    - abseil-cpp  # [win or aarch64]
     - grpc-cpp
     - cmake
     - autoconf  # [unix]
@@ -43,6 +46,8 @@ requirements:
     - numpy-devel >=1.14
     - libboost
     - thrift-cpp >=0.13
+    - libprotobuf
+    - cython
   host:
     - aws-sdk-cpp
     - boost-cpp
