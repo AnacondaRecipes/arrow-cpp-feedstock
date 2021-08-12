@@ -32,6 +32,8 @@ build:
 requirements:
   build:
     - abseil-cpp  # [win]
+    - libprotobuf
+    - gnuconfig   # [osx and arm64]
     - grpc-cpp
     - cmake
     - autoconf  # [unix]
@@ -40,10 +42,12 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - utf8proc
-    - numpy-devel >=1.14
+    - numpy-devel >=1.14  # [not (osx and arm64)]
+    - numpy       >=1.21  # [osx and arm64]
     - libboost
     - thrift-cpp >=0.13
   host:
+    - abseil-cpp
     - aws-sdk-cpp
     - boost-cpp
     - brotli
