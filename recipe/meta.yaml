@@ -42,7 +42,7 @@ requirements:
     - libboost
     # hard pinning for one build..
     # - thrift-cpp >=0.13
-    - thrift-cpp 0.13
+    - thrift-cpp 0.14
   host:
     - abseil-cpp    # [not win]
     - aws-sdk-cpp
@@ -64,7 +64,7 @@ requirements:
     - snappy
     # hard pinning for one build..
     # - thrift-cpp >=0.13
-    - thrift-cpp 0.13
+    - thrift-cpp 0.14
     - uriparser
     - zlib
     - zstd
