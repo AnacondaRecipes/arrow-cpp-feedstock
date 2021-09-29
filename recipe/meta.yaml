@@ -25,7 +25,6 @@ build:
     - zstd    # [win]
     - snappy  # [win]
     - brotli  # [win]
-    - libthrift  # [win]
     - lz4-c   # [win]
 requirements:
   build:
