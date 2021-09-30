@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 3
+  number: 4
   skip: true  # [(win and vc<14) or win32]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -25,7 +25,6 @@ build:
     - zstd    # [win]
     - snappy  # [win]
     - brotli  # [win]
-    - libthrift  # [win]
     - lz4-c   # [win]
 requirements:
   build:
@@ -40,8 +39,11 @@ requirements:
     - utf8proc
     - numpy-devel >=1.14
     - libboost
-    - thrift-cpp >=0.13
+    # hard pinning for one build..
+    # - thrift-cpp >=0.13
+    - thrift-cpp 0.14
   host:
+    - abseil-cpp    # [not win]
     - aws-sdk-cpp
     - boost-cpp
     - brotli
@@ -59,7 +61,9 @@ requirements:
     - rapidjson
     - re2
     - snappy
-    - thrift-cpp >=0.13
+    # hard pinning for one build..
+    # - thrift-cpp >=0.13
+    - thrift-cpp 0.14
     - uriparser
     - zlib
     - zstd
