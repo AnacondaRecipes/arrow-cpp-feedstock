@@ -1,0 +1,4 @@
+libprotobuf:
+  - 3.14.0
+icu:
+  - 68
