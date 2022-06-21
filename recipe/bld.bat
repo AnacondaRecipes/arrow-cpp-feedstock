@@ -28,6 +28,7 @@ cmake -G "Ninja" ^
       -DARROW_ORC:BOOL=ON ^
       -DARROW_S3:BOOL=ON ^
       -DARROW_WITH_BZ2:BOOL=ON ^
+      -DARROW_WITH_LZ4=ON ^
       -DARROW_WITH_ZLIB:BOOL=ON ^
       -DARROW_WITH_ZSTD:BOOL=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
