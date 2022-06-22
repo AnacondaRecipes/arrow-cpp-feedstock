@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 4
+  number: 0
   skip: true  # [(win and vc<14) or win32]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
