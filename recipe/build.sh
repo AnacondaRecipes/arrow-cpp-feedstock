@@ -63,8 +63,6 @@ cmake \
     -DARROW_WITH_SNAPPY=ON \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_ZSTD=ON \
-    -DCMAKE_AR=${AR} \
-    -DCMAKE_RANLIB=${RANLIB} \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc \
     -GNinja \
