@@ -13,10 +13,14 @@ source:
 
 build:
   number: 0
-  skip: true  # [(win and vc<14) or win32]
+  # s390x is missing thrift-cpp, gflags, utf8proc, glog
+  skip: true  # [(win and vc<14) or win32 or s390x]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   ignore_run_exports:
+    # TODO: all of these need to be checked one-by-one, there are too many.
+    - c-ares
+    - openssl
     - grpc-cpp
     - libevent
     - re2
