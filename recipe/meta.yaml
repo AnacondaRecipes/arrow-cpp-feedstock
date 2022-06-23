@@ -99,6 +99,8 @@ requirements:
     - python
 
 test:
+  requires:
+    - conda-build
   commands:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
