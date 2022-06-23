@@ -52,7 +52,7 @@ requirements:
     - libboost
     - thrift-cpp >=0.13
   host:
-    - abseil-cpp
+    - abseil-cpp  # [not osx]
     - aws-sdk-cpp
     - boost-cpp
     - brotli
