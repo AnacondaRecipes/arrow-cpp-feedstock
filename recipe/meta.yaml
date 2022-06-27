@@ -17,6 +17,12 @@ build:
   skip: true  # [(win and vc<14) or win32 or s390x]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
+  missing_dso_whitelist:
+    - '$RPATH/libpthread.so.*'  # [linux]
+    - '$RPATH/libc.so.*'  # [linux]
+    - '$RPATH/libdl.so.*'  # [linux]
+    - '$RPATH/libm.so.*'  # [linux]
+    - '$RPATH/ld64.so.*'  # [linux]
   ignore_run_exports:
     # TODO: all of these need to be checked one-by-one, there are too many.
     - c-ares
