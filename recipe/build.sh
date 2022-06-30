@@ -51,6 +51,15 @@ cmake \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
+# jemalloc doesn't know about apple M1, fix this here.
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    ninja \
+        jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch \
+        mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
+    # Update the config.guess and config.sub scripts
+    cp "${BUILD_PREFIX}/share/gnuconfig/"config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
+fi
+
 ninja -v install
 
 popd

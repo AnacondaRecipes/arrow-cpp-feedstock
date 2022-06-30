@@ -71,6 +71,9 @@ requirements:
     # gflags does have a run_exports, but for some reason conda-build doesn't
     # pick it up.
     - {{ pin_compatible('gflags', max_pin='x.x') }}
+    # brotli doesn't have run_exports defined.
+    - brotli  # [osx]
+    # Set this to some reasonable lower limit.
     - {{ pin_compatible('numpy', lower_bound='1.16') }}
     - utf8proc
 
