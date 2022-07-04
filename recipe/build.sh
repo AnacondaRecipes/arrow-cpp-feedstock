@@ -6,9 +6,7 @@ set -x
 mkdir cpp/build
 pushd cpp/build
 
-EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF DARROW_GANDIVA=OFF"
-
-cmake \
+cmake -GNinja \
     ${CMAKE_ARGS} \
     -DCMAKE_BUILD_TYPE=Release \
     -DARROW_BOOST_USE_SHARED=ON \
@@ -18,10 +16,12 @@ cmake \
     -DARROW_BUILD_TESTS=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
     -DARROW_CSV=ON \
+    -DARROW_CUDA=OFF \
     -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FLIGHT=ON \
     -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
+    -DARROW_GANDIVA=OFF \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
     -DARROW_JSON=ON \
@@ -45,10 +45,7 @@ cmake \
     -DCMAKE_INSTALL_LIBDIR="${PREFIX}/lib" \
     -DPYTHON_EXECUTABLE="${PYTHON}" \
     -DPython3_EXECUTABLE="${PYTHON}" \
-    -DPython3_EXECUTABLE="${PYTHON}" \
     -DProtobuf_PROTOC_EXECUTABLE="${BUILD_PREFIX}/bin/protoc" \
-    -GNinja \
-    ${EXTRA_CMAKE_ARGS} \
     ..
 
 # jemalloc doesn't know about apple M1, fix this here.
