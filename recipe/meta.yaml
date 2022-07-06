@@ -1,6 +1,6 @@
-{% set version = "4.0.1" %}
+{% set version = "8.0.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "75ccbfa276b925c6b1c978a920ff2f30c4b0d3fdf8b51777915b6f69a211896e" %}
+{% set checksum = "ad9a05705117c989c116bae9ac70492fe015050e1b80fb0e38fde4b5d863aaa3" %}
 
 package:
   name: arrow-cpp
@@ -10,91 +10,88 @@ source:
   fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
+  patches:
+    # Fixes an "unknown type error" on Windows
+    - "0005-tracing-internal-include.patch"  # [win]
 
 build:
-  number: 4
-  skip: true  # [(win and vc<14) or win32]
+  number: 0
+  # s390x is missing gflags, glog, utf8proc, thrift-cpp
+  skip: true  # [win32 or s390x]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   ignore_run_exports:
-    - grpc-cpp
-    - libevent
-    - re2
+    # openssl, glog and zlib are expected by the build system but not
+    # used/needed in all the configurations that we build.
     - glog
+    - openssl  # [not win]
     - zlib
-    - python
-    - gflags  # [win]
-    - zstd    # [win]
-    - snappy  # [win]
-    - brotli  # [win]
-    - libthrift  # [win]
-    - lz4-c   # [win]
+    - abseil-cpp  # [win]
+  missing_dso_whitelist:
+    - '$RPATH/libpthread.so.*'  # [linux]
+    - '$RPATH/libc.so.*'        # [linux]
+    - '$RPATH/libdl.so.*'       # [linux]
+    - '$RPATH/libm.so.*'        # [linux]
+    - '$RPATH/ld64.so.*'        # [linux]
+
 requirements:
   build:
-    - abseil-cpp  # [win]
-    - libprotobuf
-    - gnuconfig   # [osx and arm64]
-    - grpc-cpp
-    # See https://github.com/aws/aws-sdk-cpp/issues/1820
-    - cmake  <3.22
-    - autoconf  # [unix]
-    - ninja
-    - make      # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - utf8proc
-    - numpy-devel >=1.14  # [not (osx and arm64) and py<=39]
-    - numpy  >=1.19       # [(osx and arm64) or py>39]
-    - libboost
-    - thrift-cpp >=0.13
+    - autoconf  # [unix]
+    # See https://github.com/aws/aws-sdk-cpp/issues/1820
+    - cmake  <3.22
+    - gnuconfig
+    - make  # [unix]
+    - m2-patch  # [win]
+    - ninja
+    # To have the protoc compiler as a build tool.
+    - protobuf
+    # To have the thrift compiler as a build tool.
+    - thrift-cpp
   host:
-    - abseil-cpp
+    - abseil-cpp  # [not osx]
     - aws-sdk-cpp
     - boost-cpp
     - brotli
     - bzip2
-    - c-ares
-    - double-conversion
-    - flatbuffers
-    - gflags
+    # Only required and used on Windows.
+    - c-ares  # [win]
+    # The binary using this presumably isn't built on Windows.
+    - gflags  # [not win]
     - glog
     - grpc-cpp
-    - libprotobuf
     - lz4-c
     - numpy
+    - openssl
     - orc  # [unix]
+    - libprotobuf
     - rapidjson
     - re2
     - snappy
-    - thrift-cpp >=0.13
+    - thrift-cpp
     - uriparser
+    - utf8proc
     - zlib
     - zstd
-    - utf8proc
-    - openssl
-    - libevent  # [unix]
     - python
   run:
-    - {{ pin_compatible('numpy', lower_bound='1.11') }}
-    - boost-cpp
-    - brotli
-    - c-ares
-    - double-conversion
-    - gflags
-    - glog
-    - grpc-cpp
-    - lz4-c
-    - libboost
-    - openssl
-    - re2
-    - snappy
-    - uriparser
-    - zlib
-    - zstd
+    # gflags does have a run_exports, but for some reason conda-build doesn't
+    # pick it up.
+    - {{ pin_compatible('gflags', max_pin='x.x') }}  # [not win]
+    # brotli doesn't have run_exports defined.
+    - brotli  # [osx]
+    # Set this to some reasonable lower limit.
+    - {{ pin_compatible('numpy', lower_bound='1.16') }}
     - utf8proc
-    - python
+    # It's not clear to me, why conda-build detects them, but doesn't create
+    # an automatic dependency.
+    - zlib  # [win]
+    - python  # [win]
 
 test:
+  requires:
+    - conda-build
   commands:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
@@ -139,8 +136,8 @@ test:
     - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
 
 about:
-  home: http://github.com/apache/arrow
-  license: Apache 2.0
+  home: https://github.com/apache/arrow
+  license: Apache-2.0
   license_file: LICENSE.txt
   license_family: Apache
   summary: 'C++ libraries for Apache Arrow'

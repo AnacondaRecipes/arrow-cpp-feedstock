@@ -6,55 +6,34 @@ set -x
 mkdir cpp/build
 pushd cpp/build
 
-EXTRA_CMAKE_ARGS=""
-
-# Include g++'s system headers
-if [ "$(uname)" == "Linux" ]; then
-  SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
-  EXTRA_CMAKE_ARGS=" -DARROW_GANDIVA_PC_CXX_FLAGS=${SYSTEM_INCLUDES}"
-fi
-
-# we don't provide right now CUDA variant
-EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
-
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-    # We need llvm 11+ support in Arrow for this
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF"
-    sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
-    sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
-else
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF"
-fi
-
-export BOOST_ROOT="${LIBRARY_PREFIX}"
-export Boost_ROOT="${LIBRARY_PREFIX}"
-
-cmake \
+cmake -GNinja \
+    ${CMAKE_ARGS} \
+    -DCMAKE_BUILD_TYPE=Release \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
+    -DARROW_BUILD_SHARED=ON \
     -DARROW_BUILD_STATIC=OFF \
     -DARROW_BUILD_TESTS=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
-    -DBUILD_SHARED_LIBS=ON \
-    -DARROW_SSE42=OFF \
-    -DCMAKE_BUILD_TYPE=release \
-    -DCMAKE_INSTALL_PREFIX=$PREFIX \
-    -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
-    -DCMAKE_INSTALL_LIBDIR=$PREFIX/lib \
+    -DARROW_CSV=ON \
+    -DARROW_CUDA=OFF \
+    -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
-    -DARROW_PACKAGE_PREFIX=$PREFIX \
-    -DPYTHON_EXECUTABLE=$PYTHON \
-    -DPython3_EXECUTABLE=$PYTHON \
-    -DARROW_DATASETS=ON \
-    -DARROW_JEMALLOC=ON \
-    -DARROW_MIMALLOC=ON \
-    -DARROW_HDFS=ON \
     -DARROW_FLIGHT=ON \
     -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
-    -DARROW_PLASMA=ON \
-    -DARROW_PYTHON=ON \
-    -DARROW_PARQUET=ON \
+    -DARROW_GANDIVA=OFF \
+    -DARROW_HDFS=ON \
+    -DARROW_JEMALLOC=ON \
+    -DARROW_JSON=ON \
+    -DARROW_MIMALLOC=ON \
+    -DARROW_OPENSSL_USE_SHARED=ON \
     -DARROW_ORC=ON \
+    -DARROW_PACKAGE_PREFIX="${PREFIX}" \
+    -DARROW_PARQUET=ON \
+    -DARROW_PLASMA=ON \
+    -DARROW_PROTOBUF_USE_SHARED=ON \
+    -DARROW_PYTHON=ON \
+    -DARROW_SIMD_LEVEL=DEFAULT \
     -DARROW_S3=ON \
     -DARROW_WITH_BROTLI=ON \
     -DARROW_WITH_BZ2=ON \
@@ -62,22 +41,22 @@ cmake \
     -DARROW_WITH_SNAPPY=ON \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_ZSTD=ON \
-    -DCMAKE_AR=${AR} \
-    -DCMAKE_RANLIB=${RANLIB} \
-    -DPython3_EXECUTABLE=${PYTHON} \
-    -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc \
-    -GNinja \
-    ${EXTRA_CMAKE_ARGS} \
+    -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+    -DCMAKE_INSTALL_LIBDIR="${PREFIX}/lib" \
+    -DPYTHON_EXECUTABLE="${PYTHON}" \
+    -DPython3_EXECUTABLE="${PYTHON}" \
+    -DProtobuf_PROTOC_EXECUTABLE="${BUILD_PREFIX}/bin/protoc" \
     ..
 
+# jemalloc doesn't know about apple M1, fix this here.
 if [[ "${target_platform}" == "osx-arm64" ]]; then
-    ln -s $BUILD_PREFIX/bin/$HOST-ar $HOST-ar
-    ln -s $BUILD_PREFIX/bin/$HOST-ranlib $HOST-ranlib
-    ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
-    cp $BUILD_PREFIX/share/gnuconfig/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
-    sed -ie 's/list(APPEND mi_cflags -march=native)//g' mimalloc_ep-prefix/src/mimalloc_ep/CMakeLists.txt
+    ninja \
+        jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch \
+        mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
+    # Update the config.guess and config.sub scripts
+    cp "${BUILD_PREFIX}/share/gnuconfig/"config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
 fi
 
-ninja install
+ninja -v install
 
 popd
