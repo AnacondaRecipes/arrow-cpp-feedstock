@@ -17,7 +17,7 @@ source:
 build:
   number: 0
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
-  skip: true  # [win32 or s390x]
+  skip: true  # [not linux64]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   ignore_run_exports:
