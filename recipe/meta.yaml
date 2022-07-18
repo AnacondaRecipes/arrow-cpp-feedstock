@@ -1,6 +1,6 @@
-{% set version = "8.0.0" %}
+{% set version = "6.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "ad9a05705117c989c116bae9ac70492fe015050e1b80fb0e38fde4b5d863aaa3" %}
+{% set checksum = "3786b3d2df954d078b3e68f98d2e5aecbaa3fa2accf075d7a3a13c187b9c5294" %}
 
 package:
   name: arrow-cpp
@@ -11,6 +11,7 @@ source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
   patches:
+    - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
     # Fixes an "unknown type error" on Windows
     - "0005-tracing-internal-include.patch"  # [win]
 
@@ -43,6 +44,7 @@ requirements:
     - cmake  <3.22
     - gnuconfig
     - make  # [unix]
+    - patch # [not win]
     - m2-patch  # [win]
     - ninja
     # To have the protoc compiler as a build tool.
