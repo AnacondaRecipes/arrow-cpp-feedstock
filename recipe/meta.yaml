@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
   patches:
     # Fixes an "unknown type error" on Windows
-    - "0005-tracing-internal-include.patch"  # [win]
+#    - "0005-tracing-internal-include.patch"  # [win]
 
 build:
   number: 0
