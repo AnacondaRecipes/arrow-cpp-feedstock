@@ -43,12 +43,15 @@ requirements:
     - cmake  <3.22
     - gnuconfig
     - make  # [unix]
+    - patch  # [unix]
     - m2-patch  # [win]
     - ninja
     # To have the protoc compiler as a build tool.
     - protobuf
     # To have the thrift compiler as a build tool.
     - thrift-cpp
+    - libutf8proc
+    - utf8proc
   host:
     - abseil-cpp  # [not osx]
     - aws-sdk-cpp
