@@ -71,7 +71,7 @@ requirements:
     - libprotobuf
     - rapidjson
     - re2
-#    - snappy
+    - snappy  # [unix]
     - thrift-cpp
     - uriparser
     - utf8proc
