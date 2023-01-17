@@ -11,8 +11,6 @@ source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
   patches:
-    # Fixes an "unknown type error" on Windows
-#    - "0005-tracing-internal-include.patch"  # [win]
 
 build:
   number: 0
@@ -42,7 +40,7 @@ requirements:
     - {{ compiler('cxx') }}
     - autoconf  # [unix]
     # See https://github.com/aws/aws-sdk-cpp/issues/1820
-    - cmake  <3.22
+    - cmake 
     - gnuconfig
     - make  # [unix]
     - patch  # [unix]
@@ -145,6 +143,9 @@ about:
   license_file: LICENSE.txt
   license_family: Apache
   summary: 'C++ libraries for Apache Arrow'
+  description: " Apache Arrow defines a language-independent columnar memory format 
+                 for flat and hierarchical data, organized for efficient analytic operations 
+                 on modern hardware like CPUs and GPUs. "
   dev_url: https://github.com/apache/arrow
   doc_url: https://arrow.apache.org
 
