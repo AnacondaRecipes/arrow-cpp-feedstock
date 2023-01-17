@@ -40,7 +40,7 @@ requirements:
     - {{ compiler('cxx') }}
     - autoconf  # [unix]
     # See https://github.com/aws/aws-sdk-cpp/issues/1820
-    - cmake 
+    - cmake  <3.22 
     - gnuconfig
     - make  # [unix]
     - patch  # [unix]
