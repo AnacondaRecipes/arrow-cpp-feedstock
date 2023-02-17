@@ -15,7 +15,7 @@ source:
     - "0005-tracing-internal-include.patch"  # [win]
 
 build:
-  number: 0
+  number: 1
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
@@ -86,7 +86,7 @@ requirements:
     - utf8proc
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
-    - zlib  # [win]
+    - zlib
     - python
 
 test:
