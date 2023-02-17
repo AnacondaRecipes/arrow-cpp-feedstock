@@ -86,7 +86,7 @@ requirements:
     - utf8proc
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
-    - zlib  # [win]
+    - zlib
     - python
 
 test:
