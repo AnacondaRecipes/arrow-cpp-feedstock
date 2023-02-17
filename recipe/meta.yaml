@@ -15,7 +15,7 @@ source:
     - "0005-tracing-internal-include.patch"  # [win]
 
 build:
-  number: 0
+  number: 1
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
