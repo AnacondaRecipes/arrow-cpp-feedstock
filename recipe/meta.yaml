@@ -10,7 +10,6 @@ source:
   fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
-  patches:
 
 build:
   number: 0
@@ -40,9 +39,8 @@ requirements:
     - {{ compiler('cxx') }}
     - autoconf  # [unix]
     # See https://github.com/aws/aws-sdk-cpp/issues/1820
-    - cmake  <3.22 
+    - cmake  <3.22
     - gnuconfig
-    - make  # [unix]
     - patch  # [unix]
     - m2-patch  # [win]
     - ninja
@@ -88,8 +86,7 @@ requirements:
     - utf8proc
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
-    # - zlib  # [win]
-    - zlib
+    - zlib  # [win]
     - python
 
 test:
@@ -117,7 +114,7 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_dataset.dll exir 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_flight.dll exit 1   # [win]
-    # - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1   # [win]
+    - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1   # [win]
     - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1        # [win]
     # - if not exist %PREFIX%\\Library\\bin\\gandiva.dll exit 1        # [win]
     # - if not exist %PREFIX%\\Library\\bin\\plasma.dll  exit 1        # [win]
@@ -130,7 +127,7 @@ test:
     # - test ! -f $PREFIX/lib/libgandiva.a       # [unix]
     - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if exist %PREFIX%\\Library\\lib\\arrow_flight_static.lib exit 1  # [win]
-    # - if exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
+    - if exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
     # - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1       # [win]
 
@@ -144,7 +141,8 @@ about:
   license_file: LICENSE.txt
   license_family: Apache
   summary: 'C++ libraries for Apache Arrow'
-  description: " Apache Arrow defines a language-independent columnar memory format 
+  description: |
+  " Apache Arrow defines a language-independent columnar memory format 
                  for flat and hierarchical data, organized for efficient analytic operations 
                  on modern hardware like CPUs and GPUs. "
   dev_url: https://github.com/apache/arrow
