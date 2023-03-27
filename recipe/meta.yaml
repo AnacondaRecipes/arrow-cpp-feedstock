@@ -31,6 +31,8 @@ requirements:
     - autoconf  # [unix]
     # See https://github.com/aws/aws-sdk-cpp/issues/1820
     - cmake  <3.22
+    # Needed when compiling jemalloc_ep
+    - make  # [unix]
     - gnuconfig
     - ninja
     # To have the protoc compiler as a build tool.
