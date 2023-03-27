@@ -11,8 +11,6 @@ source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
   patches:
-    # Fixes an "unknown type error" on Windows
-    - "0005-tracing-internal-include.patch"  # [win]
 
 build:
   number: 1
