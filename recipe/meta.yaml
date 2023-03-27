@@ -40,32 +40,32 @@ requirements:
     # To have the thrift compiler as a build tool.
     - thrift-cpp
   host:
-    - abseil-cpp  # [not osx]
-    - aws-sdk-cpp
-    - boost-cpp
-    - brotli
-    - bzip2
+    - abseil-cpp 20211102.0  # [not osx]
+    - aws-sdk-cpp 1.8.185 
+    - boost-cpp 1.73.0
+    - brotli 1.0.9
+    - bzip2 1.0.8
     # Only required and used on Windows.
-    - c-ares  # [win]
+    - c-ares 1.15.0  # [win]
     # The binary using this presumably isn't built on Windows.
-    - gflags  # [not win]
-    - glog
-    - grpc-cpp
-    - lz4-c
+    - gflags 2.2.2  # [not win]
+    - glog 0.5.0
+    - grpc-cpp 1.46.1
+    - lz4-c 1.9.3
     - numpy
     - openssl
-    - orc
+    - orc 1.7.4
     - libprotobuf
-    - rapidjson
-    - re2
-    - snappy
-    - thrift-cpp
-    - uriparser
-    - utf8proc
+    - rapidjson 1.1.0
+    - re2 2022.04.01
+    - snappy 1.1.9
+    - thrift-cpp 0.13.0
+    - uriparser 0.9.3
+    - utf8proc 2.6.1
     - zlib
     - zstd
     - python
-    - xsimd
+    - xsimd 9.0.1
   run:
     # gflags does have a run_exports, but for some reason conda-build doesn't
     # pick it up.
