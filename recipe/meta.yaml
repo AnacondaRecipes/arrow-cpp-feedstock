@@ -10,7 +10,6 @@ source:
   fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
-  patches:
 
 build:
   number: 1
