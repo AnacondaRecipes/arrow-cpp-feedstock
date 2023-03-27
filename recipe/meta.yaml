@@ -105,7 +105,6 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_dataset.dll exir 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_flight.dll exit 1   # [win]
-    - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1   # [win]
     - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1        # [win]
     # - if not exist %PREFIX%\\Library\\bin\\gandiva.dll exit 1        # [win]
     # - if not exist %PREFIX%\\Library\\bin\\plasma.dll  exit 1        # [win]
@@ -118,7 +117,6 @@ test:
     # - test ! -f $PREFIX/lib/libgandiva.a       # [unix]
     - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if exist %PREFIX%\\Library\\lib\\arrow_flight_static.lib exit 1  # [win]
-    - if exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
     # - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1       # [win]
 
