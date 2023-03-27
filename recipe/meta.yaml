@@ -52,7 +52,7 @@ requirements:
     - lz4-c
     - numpy
     - openssl
-    - orc  # [unix]
+    - orc
     - libprotobuf
     - rapidjson
     - re2
