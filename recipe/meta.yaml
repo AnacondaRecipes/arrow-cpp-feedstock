@@ -59,7 +59,8 @@ requirements:
     - rapidjson 1.1.0
     - re2 2022.04.01
     - snappy 1.1.9
-    - thrift-cpp 0.15.0
+    - thrift-cpp 0.15.0  # [not (osx and arm64)]
+    - thrift-cpp 0.13.0  # [osx and arm64]
     - uriparser 0.9.3
     - utf8proc 2.6.1
     - zlib
