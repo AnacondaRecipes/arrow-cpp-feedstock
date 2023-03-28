@@ -83,8 +83,6 @@ requirements:
     - python
 
 test:
-  imports:
-    - 
   requires:
     - conda-build
   commands:
