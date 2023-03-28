@@ -51,7 +51,7 @@ requirements:
     - gflags 2.2.2  # [not win]
     - glog 0.5.0
     - grpc-cpp 1.46.1
-    - lz4-c 1.9.3
+    - lz4-c 1.9.4
     - numpy
     - openssl
     - orc 1.7.4
@@ -66,7 +66,7 @@ requirements:
     - zlib
     - zstd
     - python
-    - xsimd 9.0.1
+    - xsimd 10.0.0
   run:
     # gflags does have a run_exports, but for some reason conda-build doesn't
     # pick it up.
