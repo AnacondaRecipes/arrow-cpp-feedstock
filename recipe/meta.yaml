@@ -78,6 +78,7 @@ requirements:
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
+    - c-ares  # [win]
 
 test:
   requires:
