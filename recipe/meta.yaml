@@ -52,10 +52,10 @@ requirements:
     - glog 0.5.0
     - grpc-cpp 1.46.1
     - lz4-c 1.9.4
-    - numpy
-    - openssl
+    - numpy {{ numpy }}
+    - openssl {{ openssl }}
     - orc 1.7.4
-    - libprotobuf
+    - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
     - re2 2022.04.01
     - snappy 1.1.9
@@ -63,8 +63,8 @@ requirements:
     - thrift-cpp 0.13.0  # [osx and arm64]
     - uriparser 0.9.3
     - utf8proc 2.6.1
-    - zlib
-    - zstd
+    - zlib {{ zlib }}
+    - zstd {{ zstd }}
     - python
     - xsimd 10.0.0
   run:
