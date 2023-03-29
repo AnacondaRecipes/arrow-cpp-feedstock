@@ -133,9 +133,9 @@ about:
   license_family: Apache
   summary: 'C++ libraries for Apache Arrow'
   description: |
-    " Apache Arrow defines a language-independent columnar memory format 
-                  for flat and hierarchical data, organized for efficient analytic operations 
-                  on modern hardware like CPUs and GPUs. "
+    Apache Arrow defines a language-independent columnar memory format 
+    for flat and hierarchical data, organized for efficient analytic operations 
+    on modern hardware like CPUs and GPUs.
   dev_url: https://github.com/apache/arrow
   doc_url: https://arrow.apache.org
 
