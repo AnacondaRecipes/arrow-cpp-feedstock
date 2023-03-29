@@ -1,6 +1,6 @@
-{% set version = "8.0.0" %}
+{% set version = "10.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "ad9a05705117c989c116bae9ac70492fe015050e1b80fb0e38fde4b5d863aaa3" %}
+{% set checksum = "c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3" %}
 
 package:
   name: arrow-cpp
@@ -10,23 +10,13 @@ source:
   fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
-  patches:
-    # Fixes an "unknown type error" on Windows
-    - "0005-tracing-internal-include.patch"  # [win]
 
 build:
-  number: 1
+  number: 0
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
-  ignore_run_exports:
-    # openssl, glog and zlib are expected by the build system but not
-    # used/needed in all the configurations that we build.
-    - glog
-    - openssl  # [not win]
-    - zlib
-    - abseil-cpp  # [win]
   missing_dso_whitelist:
     - '$RPATH/libpthread.so.*'  # [linux]
     - '$RPATH/libc.so.*'        # [linux]
@@ -41,40 +31,42 @@ requirements:
     - autoconf  # [unix]
     # See https://github.com/aws/aws-sdk-cpp/issues/1820
     - cmake  <3.22
-    - gnuconfig
+    # Needed when compiling jemalloc_ep
     - make  # [unix]
-    - m2-patch  # [win]
+    - gnuconfig
     - ninja
     # To have the protoc compiler as a build tool.
     - protobuf
     # To have the thrift compiler as a build tool.
     - thrift-cpp
   host:
-    - abseil-cpp  # [not osx]
-    - aws-sdk-cpp
-    - boost-cpp
-    - brotli
-    - bzip2
+    - abseil-cpp 20211102.0  # [not osx]
+    - aws-sdk-cpp 1.8.185 
+    - boost-cpp 1.73.0
+    - brotli 1.0.9
+    - bzip2 1.0.8
     # Only required and used on Windows.
-    - c-ares  # [win]
+    - c-ares 1.15.0  # [win]
     # The binary using this presumably isn't built on Windows.
-    - gflags  # [not win]
-    - glog
-    - grpc-cpp
-    - lz4-c
-    - numpy
-    - openssl
-    - orc  # [unix]
-    - libprotobuf
-    - rapidjson
-    - re2
-    - snappy
-    - thrift-cpp
-    - uriparser
-    - utf8proc
-    - zlib
-    - zstd
+    - gflags 2.2.2  # [not win]
+    - glog 0.5.0
+    - grpc-cpp 1.46.1
+    - lz4-c 1.9.4
+    - numpy {{ numpy }}
+    - openssl {{ openssl }}
+    - orc 1.7.4
+    - libprotobuf {{ libprotobuf }}
+    - rapidjson 1.1.0
+    - re2 2022.04.01
+    - snappy 1.1.9
+    - thrift-cpp 0.15.0  # [not (osx and arm64)]
+    - thrift-cpp 0.13.0  # [osx and arm64]
+    - uriparser 0.9.3
+    - utf8proc 2.6.1
+    - zlib {{ zlib }}
+    - zstd {{ zstd }}
     - python
+    - xsimd 10.0.0
   run:
     # gflags does have a run_exports, but for some reason conda-build doesn't
     # pick it up.
@@ -87,6 +79,7 @@ requirements:
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
+    - c-ares  # [win]
     - python
 
 test:
@@ -114,7 +107,6 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_dataset.dll exir 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_flight.dll exit 1   # [win]
-    - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1   # [win]
     - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1        # [win]
     # - if not exist %PREFIX%\\Library\\bin\\gandiva.dll exit 1        # [win]
     # - if not exist %PREFIX%\\Library\\bin\\plasma.dll  exit 1        # [win]
@@ -127,7 +119,6 @@ test:
     # - test ! -f $PREFIX/lib/libgandiva.a       # [unix]
     - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if exist %PREFIX%\\Library\\lib\\arrow_flight_static.lib exit 1  # [win]
-    - if exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
     # - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1       # [win]
 
@@ -141,6 +132,10 @@ about:
   license_file: LICENSE.txt
   license_family: Apache
   summary: 'C++ libraries for Apache Arrow'
+  description: |
+    Apache Arrow defines a language-independent columnar memory format 
+    for flat and hierarchical data, organized for efficient analytic operations 
+    on modern hardware like CPUs and GPUs.
   dev_url: https://github.com/apache/arrow
   doc_url: https://arrow.apache.org
 
