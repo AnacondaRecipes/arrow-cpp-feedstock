@@ -1,6 +1,10 @@
-{% set version = "10.0.1" %}
+# Note that this feedstock must be paired with bumping the version for
+# `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
+# component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
+# hashes should match.
+{% set version = "11.0.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3" %}
+{% set sha256 = "2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430" %}
 
 package:
   name: arrow-cpp
@@ -9,7 +13,7 @@ package:
 source:
   fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: {{ checksum }}
+  sha256: {{ sha256 }}
 
 build:
   number: 0
@@ -140,6 +144,10 @@ about:
   doc_url: https://arrow.apache.org
 
 extra:
+  skip-lints:
+    # There are no Python tests for this project. All tests are executed as
+    # shell scripts.
+    - missing_imports_or_run_test_py
   recipe-maintainers:
     - wesm
     - xhochy
