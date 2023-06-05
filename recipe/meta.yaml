@@ -16,7 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
@@ -83,6 +83,7 @@ requirements:
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
+    - openssl 3.*
     - c-ares  # [win]
     - python
 
