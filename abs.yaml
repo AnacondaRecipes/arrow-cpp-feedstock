@@ -6,7 +6,6 @@ build_parameters:
 
 channels:
   staging_openssl3: openssl3
-  jcmorin-ana-org: aws
 
 aggregate_branch: openssl3_builds
 aggregate_check: false
