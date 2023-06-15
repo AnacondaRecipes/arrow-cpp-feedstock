@@ -16,7 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
@@ -54,22 +54,19 @@ requirements:
     # The binary using this presumably isn't built on Windows.
     - gflags 2.2.2  # [not win]
     - glog 0.5.0
-    - grpc-cpp 1.46.1
+    - grpc-cpp 1.48.2
     - lz4-c 1.9.4
-    - numpy {{ numpy }}
     - openssl {{ openssl }}
     - orc 1.7.4
     - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
     - re2 2022.04.01
     - snappy 1.1.9
-    - thrift-cpp 0.15.0  # [not (osx and arm64)]
-    - thrift-cpp 0.13.0  # [osx and arm64]
+    - thrift-cpp 0.15.0
     - uriparser 0.9.3
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
-    - python
     - xsimd 10.0.0
   run:
     # gflags does have a run_exports, but for some reason conda-build doesn't
@@ -77,14 +74,12 @@ requirements:
     - {{ pin_compatible('gflags', max_pin='x.x') }}  # [not win]
     # brotli doesn't have run_exports defined.
     - brotli  # [osx]
-    # Set this to some reasonable lower limit.
-    - {{ pin_compatible('numpy', lower_bound='1.16') }}
     - utf8proc
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
+    - openssl 3.*
     - c-ares  # [win]
-    - python
 
 test:
   requires:
