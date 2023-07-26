@@ -78,7 +78,7 @@ requirements:
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
-    - openssl 3.*
+    - openssl
     - c-ares  # [win]
 
 test:
