@@ -7,3 +7,6 @@ c_compiler:    # [win]
   - vs2019     # [win]
 cxx_compiler:  # [win]
   - vs2019     # [win]
+
+libprotobuf:
+  - 4.23.4

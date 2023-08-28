@@ -16,7 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 2
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
