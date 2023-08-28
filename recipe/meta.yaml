@@ -45,8 +45,8 @@ requirements:
     - thrift-cpp
   host:
     - abseil-cpp 20211102.0  # [not osx]
-    - aws-sdk-cpp 1.8.185 
-    - boost-cpp {{ boost_cpp }}
+    - aws-sdk-cpp 1.8.185
+    - boost-cpp 1.82
     - brotli 1.0.9
     - bzip2 1.0.8
     # Only required and used on Windows.
@@ -132,8 +132,8 @@ about:
   license_family: Apache
   summary: 'C++ libraries for Apache Arrow'
   description: |
-    Apache Arrow defines a language-independent columnar memory format 
-    for flat and hierarchical data, organized for efficient analytic operations 
+    Apache Arrow defines a language-independent columnar memory format
+    for flat and hierarchical data, organized for efficient analytic operations
     on modern hardware like CPUs and GPUs.
   dev_url: https://github.com/apache/arrow
   doc_url: https://arrow.apache.org
