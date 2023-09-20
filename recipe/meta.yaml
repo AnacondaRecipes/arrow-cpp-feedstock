@@ -67,7 +67,7 @@ requirements:
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
-    - xsimd 10.0.0
+    - xsimd 11.0.0
   run:
     # gflags does have a run_exports, but for some reason conda-build doesn't
     # pick it up.
