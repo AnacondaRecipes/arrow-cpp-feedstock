@@ -63,7 +63,7 @@ requirements:
     - re2 2022.04.01
     - snappy 1.1.9
     - thrift-cpp 0.15.0
-    - uriparser 0.9.3
+    - uriparser 0.9.7
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
