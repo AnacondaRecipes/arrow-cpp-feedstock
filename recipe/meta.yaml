@@ -130,7 +130,7 @@ about:
   license: Apache-2.0
   license_file: LICENSE.txt
   license_family: Apache
-  summary: 'C++ libraries for Apache Arrow'
+  summary: C++ libraries for Apache Arrow
   description: |
     Apache Arrow defines a language-independent columnar memory format
     for flat and hierarchical data, organized for efficient analytic operations
