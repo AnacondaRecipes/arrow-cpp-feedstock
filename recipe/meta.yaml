@@ -2,9 +2,9 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "11.0.0" %}
+{% set version = "10.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set sha256 = "2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430" %}
+{% set sha256 = "c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3" %}
 
 package:
   name: arrow-cpp
@@ -16,9 +16,9 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 2
+  number: 1
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
-  skip: true  # [win32 or s390x]
+  skip: true  # [s390x]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -44,13 +44,13 @@ requirements:
     # To have the thrift compiler as a build tool.
     - thrift-cpp
   host:
-    - abseil-cpp 20211102.0  # [not osx]
+    - abseil-cpp 20230802.0  # [not osx]
     - aws-sdk-cpp 1.8.185
     - boost-cpp 1.82
     - brotli 1.0.9
     - bzip2 1.0.8
     # Only required and used on Windows.
-    - c-ares 1.15.0  # [win]
+    - c-ares 1.19.1  # [win]
     # The binary using this presumably isn't built on Windows.
     - gflags 2.2.2  # [not win]
     - glog 0.5.0
@@ -63,11 +63,11 @@ requirements:
     - re2 2022.04.01
     - snappy 1.1.9
     - thrift-cpp 0.15.0
-    - uriparser 0.9.3
+    - uriparser 0.9.7
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
-    - xsimd 10.0.0
+    - xsimd 11.0.0
   run:
     # gflags does have a run_exports, but for some reason conda-build doesn't
     # pick it up.
