@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 0
+  number: 1
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [win32 or s390x]
   run_exports:
@@ -40,9 +40,9 @@ requirements:
     # To have the thrift compiler as a build tool.
     - thrift-cpp
   host:
-    - abseil-cpp 20211102.0  # [not osx]
+    - abseil-cpp 20230802.0  # [not osx]
     - aws-sdk-cpp 1.8.185 
-    - boost-cpp 1.73.0
+    - boost-cpp 1.82.0
     - brotli 1.0.9
     - bzip2 1.0.8
     # Only required and used on Windows.
