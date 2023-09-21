@@ -44,7 +44,9 @@ requirements:
     # To have the thrift compiler as a build tool.
     - thrift-cpp
   host:
-    - abseil-cpp 20230802.0  # [not osx]
+    # abseil-cpp 20230802.0 causing the UnsatisfibleDependency error so for this rebuild to work, 
+    # we need to pin it to the version 20211102.0 like it was done for arrow-cpp 11.0.0.
+    - abseil-cpp 20211102.0  # [not osx]
     - aws-sdk-cpp 1.8.185
     - boost-cpp 1.82
     - brotli 1.0.9
@@ -130,7 +132,7 @@ about:
   license: Apache-2.0
   license_file: LICENSE.txt
   license_family: Apache
-  summary: 'C++ libraries for Apache Arrow'
+  summary: C++ libraries for Apache Arrow
   description: |
     Apache Arrow defines a language-independent columnar memory format
     for flat and hierarchical data, organized for efficient analytic operations
