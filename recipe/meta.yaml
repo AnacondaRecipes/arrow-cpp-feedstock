@@ -6,23 +6,16 @@
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 {% set sha256 = "c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3" %}
 
-
-# IMPORTANT NOTICE!!!
-# This package relies on openssl 1.x so its dependency tree is the next:
-# snowpark_python 1.7.0+openssl1 (submodule and folder are snowpark-python-1.7.0-feedstock; the branch is main-1.8.0)
-#  └─ snowflake_connector 3.2.0+openssl1 (submodule and folder are snowflake-connector-python-3.2.0-feedstock; the branch is master-3.2.0)
-# ===>     └─ arrow_cpp 10.0.1+openssl1 (submodule and folder are arrow-cpp-10.0.1-openssl1-feedstock; the branch is arrow-cpp-10.0.1)
-#          └─ openssl 1.x
 package:
   name: arrow-cpp
-  version: {{ version }}+openssl1
+  version: {{ version }}
 
 source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 2
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [s390x]
   run_exports:

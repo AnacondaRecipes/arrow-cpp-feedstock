@@ -1,6 +1,7 @@
 #openssl 1.1.x required by customer
 openssl:
-  - 1.1
+  - 1.1.1
+  - 3.0
 
 MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
   - "10.13"                # [osx and x86_64]
