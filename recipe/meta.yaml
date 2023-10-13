@@ -57,7 +57,10 @@ requirements:
     - glog 0.5.0
     - grpc-cpp 1.48.2
     - lz4-c 1.9.4
-    - openssl {{ openssl }}
+#    - openssl {{ openssl }}
+    - openssl 1.1.1 # [openssl_variant == "current"]
+    - openssl 3.0 # [openssl_variant == "legacy"]
+
     - orc 1.7.4
     - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
