@@ -57,6 +57,7 @@ requirements:
     - glog 0.5.0
     - grpc-cpp 1.48.2
     - lz4-c 1.9.4
+#following does not work, see https://github.com/conda/conda-build/issues/5038
 #    - openssl {{ openssl }}
     - openssl 1.1.1 # [openssl_variant == "current"]
     - openssl 3.0 # [openssl_variant == "legacy"]

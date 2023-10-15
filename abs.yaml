@@ -1,7 +1,2 @@
-upload_without_merge: true
 upload_channels:
-#  - sfe1ed40
-  - marekw
-
-channels:
-  - marekw
+  - sfe1ed40
