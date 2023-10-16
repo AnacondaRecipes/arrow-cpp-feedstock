@@ -11,12 +11,11 @@ package:
   version: {{ version }}
 
 source:
-  fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 2
   # s390x is missing gflags, glog, utf8proc, thrift-cpp
   skip: true  # [s390x]
   run_exports:
@@ -47,8 +46,8 @@ requirements:
     # abseil-cpp 20230802.0 causing the UnsatisfibleDependency error so for this rebuild to work, 
     # we need to pin it to the version 20211102.0 like it was done for arrow-cpp 11.0.0.
     - abseil-cpp 20211102.0  # [not osx]
-    - aws-sdk-cpp 1.8.185
-    - boost-cpp 1.82
+    - aws-sdk-cpp 1.8.185 
+    - boost-cpp {{ boost }}
     - brotli 1.0.9
     - bzip2 1.0.8
     # Only required and used on Windows.
@@ -58,7 +57,11 @@ requirements:
     - glog 0.5.0
     - grpc-cpp 1.48.2
     - lz4-c 1.9.4
-    - openssl {{ openssl }}
+#following does not work, see https://github.com/conda/conda-build/issues/5038
+#    - openssl {{ openssl }}
+    - openssl 1.1.1 # [openssl_variant == "current"]
+    - openssl 3.0 # [openssl_variant == "legacy"]
+
     - orc 1.7.4
     - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
