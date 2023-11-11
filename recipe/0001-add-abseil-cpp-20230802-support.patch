@@ -1,0 +1,25 @@
+From 7f848ba5c3d14c99545b96494d3560d670bcd590 Mon Sep 17 00:00:00 2001
+From: Marek Waszkiewicz <mwaszkiewicz@anaconda.com>
+Date: Sat, 11 Nov 2023 23:15:46 +0100
+Subject: [PATCH] add abseil-cpp 20230802 support
+
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index 3eda538fb..679df6112 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -2682,7 +2682,7 @@ macro(ensure_absl)
+       # 20211102 or later. We need to update
+       # ARROW_ABSL_REQUIRED_LTS_VERSIONS list when new Abseil LTS is
+       # released.
+-      set(ARROW_ABSL_REQUIRED_LTS_VERSIONS 20211102 20220623)
++      set(ARROW_ABSL_REQUIRED_LTS_VERSIONS 20211102 20220623 20230802)
+       foreach(_VERSION ${ARROW_ABSL_REQUIRED_LTS_VERSIONS})
+         find_package(absl ${_VERSION})
+         if(absl_FOUND)
+-- 
+2.25.1
+

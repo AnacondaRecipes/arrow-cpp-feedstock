@@ -14,6 +14,8 @@ source:
   fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ sha256 }}
+  patches:
+    - 0001-add-abseil-cpp-20230802-support.patch
 
 build:
   number: 3
@@ -43,6 +45,8 @@ requirements:
     - protobuf
     # To have the thrift compiler as a build tool.
     - thrift-cpp
+    - patch     # [not win]
+    - m2-patch  # [win]
   host:
     - abseil-cpp 20230802.0  # [not osx]
     - aws-sdk-cpp 1.8.185
