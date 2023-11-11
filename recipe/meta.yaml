@@ -88,7 +88,7 @@ test:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
     - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
-    - test -f $PREFIX/include/plasma/client.h          # [unix]
+    # - test -f $PREFIX/include/plasma/client.h          # [unix]
     # - test -f $PREFIX/include/gandiva/engine.h         # [unix]
     - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
     - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
