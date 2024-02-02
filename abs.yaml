@@ -1,6 +1,0 @@
- channels:
-  - https://staging.continuum.io/prefect/fs/aws-sdk-cpp-feedstock/pr134/c48250b
-  - https://staging.continuum.io/prefect/fs/glog-feedstock/pr1/1ea1304
-  - https://staging.continuum.io/prefect/fs/gflags-feedstock/pr1/d7a47ac
-  - https://staging.continuum.io/prefect/fs/rapidjson-feedstock/pr1/834683c
-  - https://staging.continuum.io/prefect/fs/utf8proc-feedstock/pr2/412d68c

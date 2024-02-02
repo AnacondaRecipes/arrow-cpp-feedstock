@@ -2,9 +2,9 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "14.0.1" %}
+{% set version = "14.0.2" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set sha256 = "5c70eafb1011f9d124bafb328afe54f62cc5b9280b7080e1e3d668f78c0e407e" %}
+{% set sha256 = "1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2" %}
 
 package:
   name: arrow-cpp
@@ -66,12 +66,9 @@ requirements:
     - zstd {{ zstd }}
     - xsimd 10.0.0
   run:
-    # gflags does have a run_exports, but for some reason conda-build doesn't
-    # pick it up.
-    - {{ pin_compatible('gflags', max_pin='x.x') }}  # [not win]
-    # brotli doesn't have run_exports defined.
+    - gflags  # [not win]
     - brotli  # [osx]
-    - utf8proc
+    - {{ pin_compatible('utf8proc', max_pin='x') }}
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
