@@ -43,6 +43,7 @@ requirements:
   host:
     - abseil-cpp 20211102.0  # [not osx]
     - aws-sdk-cpp 1.10.55
+    - aws-crt-cpp 0.18.16
     - boost-cpp 1.82
     - brotli 1.0.9
     - bzip2 1.0.8
