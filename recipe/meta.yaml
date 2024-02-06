@@ -2,9 +2,9 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "11.0.0" %}
+{% set version = "14.0.2" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set sha256 = "2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430" %}
+{% set sha256 = "1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2" %}
 
 package:
   name: arrow-cpp
@@ -16,9 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 2
-  # s390x is missing gflags, glog, utf8proc, thrift-cpp
-  skip: true  # [win32 or s390x]
+  number: 0
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -33,8 +31,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - autoconf  # [unix]
-    # See https://github.com/aws/aws-sdk-cpp/issues/1820
-    - cmake  <3.22
+    - cmake
     # Needed when compiling jemalloc_ep
     - make  # [unix]
     - gnuconfig
@@ -45,14 +42,13 @@ requirements:
     - thrift-cpp
   host:
     - abseil-cpp 20211102.0  # [not osx]
-    - aws-sdk-cpp 1.8.185
+    - aws-sdk-cpp 1.10.55
+    - aws-crt-cpp 0.18.16
     - boost-cpp 1.82
     - brotli 1.0.9
     - bzip2 1.0.8
     # Only required and used on Windows.
-    - c-ares 1.15.0  # [win]
-    # The binary using this presumably isn't built on Windows.
-    - gflags 2.2.2  # [not win]
+    - c-ares 1.18.1  # [win]
     - glog 0.5.0
     - grpc-cpp 1.48.2
     - lz4-c 1.9.4
@@ -63,18 +59,14 @@ requirements:
     - re2 2022.04.01
     - snappy 1.1.9
     - thrift-cpp 0.15.0
-    - uriparser 0.9.3
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
     - xsimd 10.0.0
   run:
-    # gflags does have a run_exports, but for some reason conda-build doesn't
-    # pick it up.
-    - {{ pin_compatible('gflags', max_pin='x.x') }}  # [not win]
-    # brotli doesn't have run_exports defined.
+    - gflags  # [not win]
     - brotli  # [osx]
-    - utf8proc
+    - {{ pin_compatible('utf8proc', max_pin='x') }}
     # It's not clear to me, why conda-build detects them, but doesn't create
     # an automatic dependency.
     - zlib
@@ -88,38 +80,26 @@ test:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
     - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
-    - test -f $PREFIX/include/plasma/client.h          # [unix]
-    # - test -f $PREFIX/include/gandiva/engine.h         # [unix]
     - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
     - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
-    # - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
     - if not exist %LIBRARY_INC%\\parquet\\api\\reader.h exit 1  # [win]
 
     # shared
     - test -f $PREFIX/lib/libarrow${SHLIB_EXT}          # [unix]
     - test -f $PREFIX/lib/libarrow_dataset${SHLIB_EXT}  # [unix]
     - test -f $PREFIX/lib/libarrow_flight${SHLIB_EXT}   # [unix]
-    - test -f $PREFIX/lib/libarrow_python${SHLIB_EXT}   # [unux]
     - test -f $PREFIX/lib/libparquet${SHLIB_EXT}        # [unix]
-    # - test -f $PREFIX/lib/libgandiva${SHLIB_EXT}        # [unix]
-    - test -f $PREFIX/lib/libplasma${SHLIB_EXT}         # [unix]
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_dataset.dll exir 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_flight.dll exit 1   # [win]
     - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1        # [win]
-    # - if not exist %PREFIX%\\Library\\bin\\gandiva.dll exit 1        # [win]
-    # - if not exist %PREFIX%\\Library\\bin\\plasma.dll  exit 1        # [win]
     # absence of static libraries
     - test ! -f $PREFIX/lib/libarrow.a         # [unix]
     - test ! -f $PREFIX/lib/libarrow_flight.a  # [unix]
-    - test ! -f $PREFIX/lib/libarrow_python.a  # [unix]
-    - test ! -f $PREFIX/lib/libplasma.a        # [unix]
     - test ! -f $PREFIX/lib/libparquet.a       # [unix]
-    # - test ! -f $PREFIX/lib/libgandiva.a       # [unix]
     - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if exist %PREFIX%\\Library\\lib\\arrow_flight_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
-    # - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1       # [win]
 
     # conda tools
     - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
