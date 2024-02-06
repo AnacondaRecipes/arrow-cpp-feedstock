@@ -16,7 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
