@@ -16,7 +16,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 2
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -35,29 +35,29 @@ requirements:
     # Needed when compiling jemalloc_ep
     - make  # [unix]
     - gnuconfig
-    - ninja
+    - ninja-base
     # To have the protoc compiler as a build tool.
-    - protobuf
+    - libprotobuf 4.25.3
     # To have the thrift compiler as a build tool.
-    - thrift-cpp
+    - thrift-cpp 0.15.0
   host:
-    - abseil-cpp 20211102.0  # [not osx]
+    - libabseil 20240116.2
     - aws-sdk-cpp 1.10.55
     - aws-crt-cpp 0.18.16
-    - boost-cpp 1.82
+    - boost-cpp {{ boost_cpp }}
     - brotli 1.0.9
-    - bzip2 1.0.8
+    - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
-    - c-ares 1.18.1  # [win]
+    - c-ares 1.19.1  # [win]
     - glog 0.5.0
-    - grpc-cpp 1.48.2
+    - libgrpc 1.62.2
     - lz4-c 1.9.4
     - openssl {{ openssl }}
-    - orc 1.7.4
-    - libprotobuf {{ libprotobuf }}
+    - orc 2.0.1
+    - libprotobuf 4.25.3
     - rapidjson 1.1.0
     - re2 2022.04.01
-    - snappy 1.1.9
+    - snappy 1.1.10
     - thrift-cpp 0.15.0
     - utf8proc 2.6.1
     - zlib {{ zlib }}
