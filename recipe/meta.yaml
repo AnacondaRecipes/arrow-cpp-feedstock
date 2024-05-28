@@ -64,14 +64,8 @@ requirements:
     - zstd {{ zstd }}
     - xsimd 10.0.0
   run:
-    - gflags  # [not win]
-    - brotli  # [osx]
+    # other dependencies through run exports
     - {{ pin_compatible('utf8proc', max_pin='x') }}
-    # It's not clear to me, why conda-build detects them, but doesn't create
-    # an automatic dependency.
-    - zlib
-    - openssl
-    - c-ares  # [win]
 
 test:
   requires:
@@ -119,10 +113,6 @@ about:
   doc_url: https://arrow.apache.org
 
 extra:
-  skip-lints:
-    # There are no Python tests for this project. All tests are executed as
-    # shell scripts.
-    - missing_imports_or_run_test_py
   recipe-maintainers:
     - wesm
     - xhochy
