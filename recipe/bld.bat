@@ -26,6 +26,7 @@ cmake -G "Ninja" ^
       -DARROW_FLIGHT=ON ^
       -DARROW_FLIGHT_SQL=ON ^
       -DARROW_GANDIVA=OFF ^
+      -DARROW_GCS=OFF ^
       -DARROW_HDFS=ON ^
       -DARROW_JSON=ON ^
       -DARROW_MIMALLOC=OFF ^
