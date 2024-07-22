@@ -9,6 +9,7 @@ pushd cpp/build
 cmake -GNinja \
     ${CMAKE_ARGS} \
     -DCMAKE_BUILD_TYPE=Release \
+    -DARROW_PACKAGE_KIND=conda \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_SHARED=ON \
@@ -26,6 +27,7 @@ cmake -GNinja \
     -DARROW_FLIGHT=ON \
     -DARROW_FLIGHT_SQL=ON \
     -DARROW_GANDIVA=OFF \
+    -DARROW_GCS=OFF \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
     -DARROW_JSON=ON \
@@ -35,7 +37,7 @@ cmake -GNinja \
     -DARROW_PACKAGE_PREFIX="${PREFIX}" \
     -DARROW_PARQUET=ON \
     -DARROW_PROTOBUF_USE_SHARED=ON \
-    -DARROW_SIMD_LEVEL=DEFAULT \
+    -DARROW_SIMD_LEVEL=NONE \
     -DARROW_SUBSTRAIT=ON \
     -DARROW_S3=ON \
     -DARROW_UTF8PROC_USE_SHARED=ON \
@@ -54,17 +56,7 @@ cmake -GNinja \
     -DCMAKE_INSTALL_LIBDIR="${PREFIX}/lib" \
     -DCMAKE_CXX_STANDARD:STRING=17 \
     -DPARQUET_REQUIRE_ENCRYPTION=ON \
-    -DProtobuf_PROTOC_EXECUTABLE="${BUILD_PREFIX}/bin/protoc" \
     ..
-
-# jemalloc doesn't know about apple M1, fix this here.
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-    ninja \
-        jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch \
-        mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
-    # Update the config.guess and config.sub scripts
-    cp "${BUILD_PREFIX}/share/gnuconfig/"config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
-fi
 
 ninja -v install
 

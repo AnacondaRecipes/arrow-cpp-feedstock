@@ -2,21 +2,24 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "14.0.2" %}
+{% set version = "16.1.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set sha256 = "1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2" %}
 
 package:
   name: arrow-cpp
   version: {{ version }}
 
 source:
-  fn: {{ filename }}
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: {{ sha256 }}
+  sha256: c9e60c7e87e59383d21b20dc874b17153729ee153264af6d21654b7dff2c60d7
+  patches:
+    # backport https://github.com/apache/arrow/pull/41582
+    - patches/0001-C-CMake-correctly-use-Protobuf_PROTOC_EXECUTABLE.patch
+    # backport https://github.com/apache/arrow/pull/41767
+    - patches/0002-GH-41755-C-ORC-Ensure-setting-detected-ORC-version-4.patch
 
 build:
-  number: 1
+  number: 0
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -36,41 +39,53 @@ requirements:
     - make  # [unix]
     - gnuconfig
     - ninja
-    # To have the protoc compiler as a build tool.
-    - protobuf
-    # To have the thrift compiler as a build tool.
-    - thrift-cpp
+    - patch    # [unix]
+    - m2-patch # [win] 
   host:
-    - abseil-cpp 20211102.0  # [not osx]
+    - libabseil 20240116.2
     - aws-sdk-cpp 1.10.55
     - aws-crt-cpp 0.18.16
-    - boost-cpp 1.82
+    - boost-cpp {{ boost }}
     - brotli 1.0.9
-    - bzip2 1.0.8
+    - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
-    - c-ares 1.18.1  # [win]
+    - c-ares 1.19.1  # [win]
+    - gflags 2.2.2
     - glog 0.5.0
-    - grpc-cpp 1.48.2
+    - libgrpc 1.62.2
     - lz4-c 1.9.4
     - openssl {{ openssl }}
-    - orc 1.7.4
-    - libprotobuf {{ libprotobuf }}
+    - orc 2.0.1
+    - libprotobuf 4.25.3
     - rapidjson 1.1.0
     - re2 2022.04.01
-    - snappy 1.1.9
+    - snappy 1.1.10
     - thrift-cpp 0.15.0
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
-    - xsimd 10.0.0
+    - xsimd 12.1.1
   run:
-    - gflags  # [not win]
-    - brotli  # [osx]
     - {{ pin_compatible('utf8proc', max_pin='x') }}
-    # It's not clear to me, why conda-build detects them, but doesn't create
-    # an automatic dependency.
-    - zlib
+    # Through run_exports
+    - aws-crt-cpp
+    - aws-sdk-cpp
+    - bzip2
+    - gflags
+    - glog
+    - libabseil
+    - libbrotlidec
+    - libbrotlienc
+    - libgrpc
+    - libprotobuf
+    - libthrift
+    - lz4-c
     - openssl
+    - orc
+    - re2
+    - snappy
+    - zlib
+    - zstd
     - c-ares  # [win]
 
 test:
@@ -110,7 +125,7 @@ about:
   license: Apache-2.0
   license_file: LICENSE.txt
   license_family: Apache
-  summary: 'C++ libraries for Apache Arrow'
+  summary: C++ libraries for Apache Arrow
   description: |
     Apache Arrow defines a language-independent columnar memory format
     for flat and hierarchical data, organized for efficient analytic operations
