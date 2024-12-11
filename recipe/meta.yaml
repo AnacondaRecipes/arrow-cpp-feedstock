@@ -2,7 +2,7 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "16.1.0" %}
+{% set version = "17.0.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 
 package:
@@ -11,12 +11,7 @@ package:
 
 source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: c9e60c7e87e59383d21b20dc874b17153729ee153264af6d21654b7dff2c60d7
-  patches:
-    # backport https://github.com/apache/arrow/pull/41582
-    - patches/0001-C-CMake-correctly-use-Protobuf_PROTOC_EXECUTABLE.patch
-    # backport https://github.com/apache/arrow/pull/41767
-    - patches/0002-GH-41755-C-ORC-Ensure-setting-detected-ORC-version-4.patch
+  sha256: 9d280d8042e7cf526f8c28d170d93bfab65e50f94569f6a790982a878d8d898d
 
 build:
   number: 0
@@ -39,8 +34,6 @@ requirements:
     - make  # [unix]
     - gnuconfig
     - ninja
-    - patch    # [unix]
-    - m2-patch # [win] 
   host:
     - libabseil 20240116.2
     - aws-sdk-cpp 1.10.55
