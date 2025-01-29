@@ -14,7 +14,6 @@ source:
   sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
 
 build:
-  number: 0
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -51,7 +50,7 @@ requirements:
     - orc 2.0.1
     - libprotobuf 4.25.3
     - rapidjson 1.1.0
-    - re2 2022.04.01
+    - re2 2024.02.01
     - snappy 1.1.10
     - thrift-cpp 0.15.0
     - utf8proc 2.6.1
