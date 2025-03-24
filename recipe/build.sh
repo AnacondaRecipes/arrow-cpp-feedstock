@@ -6,6 +6,7 @@ set -x
 mkdir cpp/build
 pushd cpp/build
 
+# placeholder in ARROW_GDB_INSTALL_DIR must match _la_placeholder in activate.sh
 cmake -GNinja \
     ${CMAKE_ARGS} \
     -DCMAKE_BUILD_TYPE=Release \
@@ -28,6 +29,7 @@ cmake -GNinja \
     -DARROW_FLIGHT_SQL=ON \
     -DARROW_GANDIVA=OFF \
     -DARROW_GCS=OFF \
+    -DARROW_GDB_INSTALL_DIR=replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX/lib \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
     -DARROW_JSON=ON \
