@@ -14,9 +14,11 @@ source:
   sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
 
 build:
-  number: 1
+  number: 2
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
+  # libprotobuf no longer available on s390x
+  skip: true  # [linux and s390x]
   missing_dso_whitelist:
     - '$RPATH/libpthread.so.*'  # [linux]
     - '$RPATH/libc.so.*'        # [linux]
@@ -35,7 +37,7 @@ requirements:
     - gnuconfig
     - ninja
   host:
-    - libabseil 20240116.2
+    - libabseil 20250127.0
     - aws-sdk-cpp 1.11.212
     - aws-crt-cpp 0.18.16
     - boost-cpp {{ boost }}
@@ -45,13 +47,13 @@ requirements:
     - c-ares 1.19.1  # [win]
     - gflags 2.2.2
     - glog 0.5.0
-    - libgrpc 1.62.2
+    - libgrpc 1.71.0
     - lz4-c 1.9.4
     - openssl {{ openssl }}
-    - orc 2.0.1
-    - libprotobuf 4.25.3
+    - orc 2.1.1
+    - libprotobuf 5.29.3
     - rapidjson 1.1.0
-    - re2 2022.04.01
+    - re2 2024-07-02
     - snappy 1.1.10
     - thrift-cpp 0.15.0
     - utf8proc 2.6.1
