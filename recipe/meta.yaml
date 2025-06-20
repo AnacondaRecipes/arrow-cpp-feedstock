@@ -2,7 +2,7 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "17.0.0" %}
+{% set version = "18.1.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 
 package:
@@ -11,10 +11,10 @@ package:
 
 source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: 9d280d8042e7cf526f8c28d170d93bfab65e50f94569f6a790982a878d8d898d
+  sha256: 2dc8da5f8796afe213ecc5e5aba85bb82d91520eff3cf315784a52d0fa61d7fc
 
 build:
-  number: 1
+  number: 0
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -53,7 +53,9 @@ requirements:
     - rapidjson 1.1.0
     - re2 2022.04.01
     - snappy 1.1.10
-    - thrift-cpp 0.15.0
+    - libbrotlidec {{ libbrotlidec }}
+    - libbrotlienc {{ libbrotlienc }}
+    - libthrift {{ libthrift }}
     - utf8proc 2.6.1
     - zlib {{ zlib }}
     - zstd {{ zstd }}
