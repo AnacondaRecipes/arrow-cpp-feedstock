@@ -58,6 +58,9 @@ requirements:
     - zlib {{ zlib }}
     - zstd {{ zstd }}
     - xsimd 12.1.1
+    - libbrotlidec {{ libbrotlidec }}
+    - libbrotlienc {{ libbrotlienc }}
+    - libthrift {{ libthrift }}
   run:
     - {{ pin_compatible('utf8proc', max_pin='x') }}
     # Through run_exports
