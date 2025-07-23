@@ -14,7 +14,7 @@ source:
   sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
 
 build:
-  number: 3
+  number: 4
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -23,9 +23,12 @@ build:
     - '$RPATH/libdl.so.*'       # [linux]
     - '$RPATH/libm.so.*'        # [linux]
     - '$RPATH/ld64.so.*'        # [linux]
+  ignore_run_exports:
+    - libbrotlicommon # need only headers
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - autoconf  # [unix]
@@ -37,13 +40,12 @@ requirements:
   host:
     - libabseil 20250127.0
     - aws-sdk-cpp 1.11.528
-    - aws-crt-cpp 0.31.0
+    - aws-crt-cpp 0.32.10
     - boost-cpp {{ boost }}
     - brotli 1.0.9
     - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
     - c-ares 1.19.1  # [win]
-    - gflags 2.2.2
     - glog 0.5.0
     - libgrpc 1.71.0
     - lz4-c 1.9.4
@@ -51,7 +53,7 @@ requirements:
     - orc 2.1.1
     - libprotobuf 5.29.3
     - rapidjson 1.1.0
-    - re2 2024-07-02
+    - libre2-11 2024-07-02
     - snappy 1.1.10
     - thrift-cpp 0.15.0
     - utf8proc 2.6.1
@@ -67,7 +69,6 @@ requirements:
     - aws-crt-cpp
     - aws-sdk-cpp
     - bzip2
-    - gflags
     - glog
     - libabseil
     - libbrotlidec
@@ -78,7 +79,7 @@ requirements:
     - lz4-c
     - openssl
     - orc
-    - re2
+    - libre2-11
     - snappy
     - zlib
     - zstd
