@@ -14,7 +14,7 @@ source:
   sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
 
 build:
-  number: 4
+  number: 5
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -39,9 +39,9 @@ requirements:
     - ninja
   host:
     - libabseil 20250127.0
-    - aws-sdk-cpp 1.11.528
-    - aws-crt-cpp 0.32.10
-    - boost-cpp {{ boost }}
+    - aws-sdk-cpp 1.11.638
+    - aws-crt-cpp 0.34.0
+    - boost-cpp
     - brotli 1.0.9
     - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
