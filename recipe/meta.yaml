@@ -41,7 +41,7 @@ requirements:
     - libabseil 20250127.0
     - aws-sdk-cpp 1.11.638
     - aws-crt-cpp 0.34.0
-    - libboost {{ libboost }}
+    - boost-cpp
     - brotli 1.0.9
     - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
