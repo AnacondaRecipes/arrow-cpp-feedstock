@@ -38,25 +38,25 @@ requirements:
     - gnuconfig
     - ninja
   host:
-    - libabseil 20250127.0
+    - libabseil {{ libabseil }}
     - aws-sdk-cpp 1.11.638
     - aws-crt-cpp 0.34.0
     - boost-cpp
-    - brotli 1.0.9
+    - brotli {{ brotli }}
     - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
-    - c-ares 1.19.1  # [win]
-    - glog 0.5.0
-    - libgrpc 1.71.0
-    - lz4-c 1.9.4
+    - c-ares {{ c_ares }}  # [win]
+    - glog {{ glog }}
+    - libgrpc {{ libgrpc }}
+    - lz4-c {{ lz4_c }}
     - openssl {{ openssl }}
     - orc {{ orc }}
-    - libprotobuf 5.29.3
+    - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
-    - libre2-11 2024-07-02
-    - snappy
-    - thrift-cpp 0.15.0
-    - utf8proc 2.6.1
+    - libre2-11 {{ libre2_11 }}
+    - snappy {{ snappy }}
+    - thrift-cpp {{ libthrift }}
+    - utf8proc {{ libutf8proc }}
     - zlib {{ zlib }}
     - zstd {{ zstd }}
     - xsimd 12.1.1
