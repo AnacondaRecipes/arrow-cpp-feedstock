@@ -2,7 +2,7 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "19.0.0" %}
+{% set version = "21.0.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 
 package:
@@ -11,10 +11,10 @@ package:
 
 source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
+  sha256: 5d3f8db7e72fb9f65f4785b7a1634522e8d8e9657a445af53d4a34a3849857b5
 
 build:
-  number: 5
+  number: 0
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -38,25 +38,25 @@ requirements:
     - gnuconfig
     - ninja
   host:
-    - libabseil 20250127.0
+    - libabseil {{ libabseil }}
     - aws-sdk-cpp 1.11.638
     - aws-crt-cpp 0.34.0
     - boost-cpp
-    - brotli 1.0.9
+    - brotli {{ brotli }}
     - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
-    - c-ares 1.19.1  # [win]
-    - glog 0.5.0
-    - libgrpc 1.71.0
-    - lz4-c 1.9.4
+    - c-ares {{ c_ares }}  # [win]
+    - glog {{ glog }}
+    - libgrpc {{ libgrpc }}
+    - lz4-c {{ lz4_c }}
     - openssl {{ openssl }}
-    - orc 2.1.1
-    - libprotobuf 5.29.3
+    - orc {{ orc }}
+    - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
-    - libre2-11 2024-07-02
-    - snappy 1.1.10
-    - thrift-cpp 0.15.0
-    - utf8proc 2.6.1
+    - libre2-11 {{ libre2_11 }}
+    - snappy {{ snappy }}
+    - thrift-cpp {{ libthrift }}
+    - utf8proc {{ libutf8proc }}
     - zlib {{ zlib }}
     - zstd {{ zstd }}
     - xsimd 12.1.1
