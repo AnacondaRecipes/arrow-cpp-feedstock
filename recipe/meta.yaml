@@ -6,7 +6,7 @@
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 
 package:
-  name: arrow-cpp 
+  name: arrow-cpp
   version: {{ version }}
 
 source:
