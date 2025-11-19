@@ -1,7 +1,0 @@
-# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=282515
-# https://github.com/Tencent/rapidjson/issues/2347
-
-c_compiler_version:            # [osx]
-  - 17                         # [osx]
-cxx_compiler_version:          # [osx]
-  - 17                         # [osx]
