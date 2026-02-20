@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -e
-set -x
+set -euox pipefail
 
 mkdir cpp/build
 pushd cpp/build
@@ -58,7 +57,7 @@ cmake -GNinja \
     -DCMAKE_PREFIX_PATH="${PREFIX}" \
     -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     -DCMAKE_INSTALL_LIBDIR="${PREFIX}/lib" \
-    -DCMAKE_CXX_STANDARD:STRING=17 \
+    -DCMAKE_CXX_STANDARD:STRING=20 \
     -DPARQUET_REQUIRE_ENCRYPTION=ON \
     ..
 
