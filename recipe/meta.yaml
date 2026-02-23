@@ -2,16 +2,17 @@
 # `pyarrow-feedstock` as well. The two are tightly coupled. This is the CPP
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
-{% set version = "22.0.0" %}
+{% set name = "arrow-cpp" %}
+{% set version = "23.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 
 package:
-  name: arrow-cpp
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: 131250cd24dec0cddde04e2ad8c9e2bc43edc5e84203a81cf71cf1a33a6e7e0f
+  sha256: bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18
 
 build:
   number: 0
@@ -36,7 +37,7 @@ requirements:
     # Needed when compiling jemalloc_ep
     - make  # [unix]
     - gnuconfig
-    - ninja
+    - ninja-base
   host:
     - libabseil {{ libabseil }}
     - aws-sdk-cpp 1.11.720
