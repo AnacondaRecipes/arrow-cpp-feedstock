@@ -1,0 +1,18 @@
+gpu_variant:
+  - none
+  - cuda-12                         # [(ANACONDA_ROCKET_ENABLE_CUDA | default("")) == "1" and linux64]
+  - cuda-13                         # [(ANACONDA_ROCKET_ENABLE_CUDA | default("")) == "1" and linux64]
+cuda_compiler_version:
+  - none
+  - 12.8                            # [(ANACONDA_ROCKET_ENABLE_CUDA | default("")) == "1" and linux64]
+  - 13.1                            # [(ANACONDA_ROCKET_ENABLE_CUDA | default("")) == "1" and linux64]
+cuda_compiler:                      # [linux64]
+  - cuda-nvcc                       # [linux64]
+
+# No GCC downgrade needed: Arrow does not compile .cu files (no nvcc invocation).
+# It only uses the CUDA driver API (cuda.h / libcuda.so), so any host compiler works.
+
+zip_keys:
+  -
+    - gpu_variant
+    - cuda_compiler_version
