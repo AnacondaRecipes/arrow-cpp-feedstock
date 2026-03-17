@@ -6,9 +6,8 @@ cuda_compiler_version:
   - none
   - 12.8                            # [linux]
   - 13.1                            # [linux]
-cuda_compiler:                      # [linux]
-  - cuda-nvcc                       # [linux]
 
+# cuda_compiler (cuda-nvcc) inherited from aggregate CBC — not redefined here.
 # No GCC downgrade needed: Arrow does not compile .cu files (no nvcc invocation).
 # It only uses the CUDA driver API (cuda.h / libcuda.so), so any host compiler works.
 
