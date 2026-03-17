@@ -2,6 +2,13 @@
 
 set -euox pipefail
 
+# CUDA support
+if [[ "${gpu_variant:-none}" == cuda* ]]; then
+    ARROW_CUDA=ON
+else
+    ARROW_CUDA=OFF
+fi
+
 mkdir cpp/build
 pushd cpp/build
 
@@ -19,7 +26,7 @@ cmake -GNinja \
     -DARROW_ACERO=ON \
     -DARROW_COMPUTE=ON \
     -DARROW_CSV=ON \
-    -DARROW_CUDA=OFF \
+    -DARROW_CUDA=${ARROW_CUDA} \
     -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_DEPENDENCY_USE_SHARED=ON \

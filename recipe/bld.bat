@@ -1,3 +1,9 @@
+@rem CUDA support
+set "ARROW_CUDA=OFF"
+if defined gpu_variant (
+    echo %gpu_variant% | findstr /b "cuda" >nul && set "ARROW_CUDA=ON"
+)
+
 mkdir "%SRC_DIR%"\cpp\build
 pushd "%SRC_DIR%"\cpp\build
 
@@ -18,7 +24,7 @@ cmake -G "Ninja" ^
       -DARROW_ACERO=ON ^
       -DARROW_COMPUTE=ON ^
       -DARROW_CSV=ON ^
-      -DARROW_CUDA=OFF ^
+      -DARROW_CUDA=%ARROW_CUDA% ^
       -DARROW_DATASET=ON ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_DEPENDENCY_USE_SHARED=ON ^
