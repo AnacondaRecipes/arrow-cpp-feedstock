@@ -5,7 +5,7 @@
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 0 %}
+{% set build_number = 1 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 
 package:
@@ -103,7 +103,12 @@ requirements:
     - c-ares  # [win]
     # CUDA runtime dependencies
     - {{ pin_compatible('cuda-version', max_pin='x.x') }}  # [(gpu_variant or "").startswith("cuda")]
-    - __cuda                                                # [(gpu_variant or "").startswith("cuda")]
+  run_constrained:
+    # __cuda in run would block downstream packages (e.g. pyarrow) from installing
+    # arrow-cpp CUDA as a host dep in build environments without a GPU.
+    # Use run_constrained so the solver doesn't require __cuda at build time.
+    # Downstream packages (pyarrow) add __cuda to their own run deps.
+    - __cuda  # [(gpu_variant or "").startswith("cuda")]
 
 test:
   requires:
