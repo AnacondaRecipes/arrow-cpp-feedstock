@@ -18,9 +18,18 @@ zip_keys:
 
 libabseil:
   - '20250814.1'
+  - '20260107'
 
 libgrpc:
   - '1.74.1'
+  - '1.78'
 
 libprotobuf:
-  - '6.33.0'
+  - 6.33.0
+  - 6.33.5
+
+zip_keys:
+  -
+    - libabseil
+    - libgrpc
+    - libprotobuf
