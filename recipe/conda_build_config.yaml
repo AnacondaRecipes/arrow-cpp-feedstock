@@ -15,3 +15,12 @@ zip_keys:
   -
     - gpu_variant
     - cuda_compiler_version
+
+libabseil:
+  - '20250814.1'
+
+libgrpc:
+  - '1.74.1'
+
+libprotobuf:
+  - '6.33.0'
