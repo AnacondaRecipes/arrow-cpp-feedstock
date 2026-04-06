@@ -5,7 +5,7 @@
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 2 %}
+{% set build_number = 3 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 
 package:
@@ -32,6 +32,7 @@ build:
     - '$RPATH/libm.so.*'        # [linux]
     - '$RPATH/ld64.so.*'        # [linux]
     - "**/libcuda.so*"          # [(gpu_variant or "").startswith("cuda")]
+    - "**/nvcuda.dll"           # [(gpu_variant or "").startswith("cuda")]
   ignore_run_exports:
     - libbrotlicommon  # need only headers
     - cuda-cudart-dev  # needed for CMake discovery only; Arrow links cuda_driver not cudart
@@ -79,7 +80,9 @@ requirements:
     # CUDA dependencies
     - cuda-version {{ cuda_compiler_version }}    # [(gpu_variant or "").startswith("cuda")]
     - cuda-cudart-dev {{ cuda_compiler_version }}  # [(gpu_variant or "").startswith("cuda")]
-    - cuda-driver-dev {{ cuda_compiler_version }}  # [(gpu_variant or "").startswith("cuda")]
+    # cuda-driver-dev only exists for linux on pkgs/main; on Windows, cuda.lib stub
+    # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
+    - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
   run:
     - {{ pin_compatible('utf8proc', max_pin='x') }}
     # Through run_exports
@@ -139,8 +142,11 @@ test:
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
 
     # CUDA shared libraries and headers
-    - test -f $PREFIX/lib/libarrow_cuda${SHLIB_EXT}           # [unix and (gpu_variant or "").startswith("cuda")]
-    - test -f $PREFIX/include/arrow/gpu/cuda_api.h            # [unix and (gpu_variant or "").startswith("cuda")]
+    - test -f $PREFIX/lib/libarrow_cuda${SHLIB_EXT}                                # [unix and (gpu_variant or "").startswith("cuda")]
+    - test -f $PREFIX/include/arrow/gpu/cuda_api.h                                 # [unix and (gpu_variant or "").startswith("cuda")]
+    - if not exist %PREFIX%\\Library\\bin\\arrow_cuda.dll exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
+    - if not exist %PREFIX%\\Library\\lib\\arrow_cuda.lib exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
+    - if not exist %PREFIX%\\Library\\include\\arrow\\gpu\\cuda_api.h exit 1       # [win and (gpu_variant or "").startswith("cuda")]
 
     # conda tools
     - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
