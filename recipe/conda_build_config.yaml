@@ -4,7 +4,7 @@ gpu_variant:
   - cuda-13                         # [linux]
 cuda_compiler_version:
   - none
-  - 12.8                            # [linux]
+  - 12.9                            # [linux]
   - 13.1                            # [linux]
 
 # cuda_compiler (cuda-nvcc) inherited from aggregate CBC — not redefined here.
