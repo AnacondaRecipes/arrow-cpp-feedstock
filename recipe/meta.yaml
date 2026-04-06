@@ -5,7 +5,7 @@
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 1 %}
+{% set build_number = 2 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 
 package:
