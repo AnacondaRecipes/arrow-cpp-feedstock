@@ -5,7 +5,7 @@
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 3 %}
+{% set build_number = 4 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 
 package:
@@ -53,8 +53,8 @@ requirements:
     - ninja-base
   host:
     - libabseil {{ libabseil }}
-    - aws-sdk-cpp 1.11.720
-    - aws-crt-cpp 0.35.4
+    - aws-sdk-cpp 1.11.774
+    - aws-crt-cpp 0.37.4
     - boost-cpp
     - brotli {{ brotli }}
     - bzip2 {{ bzip2 }}
