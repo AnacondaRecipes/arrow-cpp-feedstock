@@ -5,7 +5,7 @@ gpu_variant:
 cuda_compiler_version:
   - none
   - 12.9                            # [win or linux]
-  - 13.1                            # [win or linux]
+  - 13.0                            # [win or linux]
 
 # cuda_compiler (cuda-nvcc) inherited from aggregate CBC — not redefined here.
 # No GCC downgrade needed: Arrow does not compile .cu files (no nvcc invocation).
