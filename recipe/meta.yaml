@@ -5,7 +5,7 @@
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 4 %}
+{% set build_number = 5 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 
 package:
@@ -70,7 +70,7 @@ requirements:
     - libre2-11 {{ libre2_11 }}
     - snappy {{ snappy }}
     - thrift-cpp {{ libthrift }}
-    - utf8proc {{ libutf8proc }}
+    - libutf8proc {{ libutf8proc }}
     - zlib {{ zlib }}
     - zstd {{ zstd }}
     - xsimd 13.0.0
@@ -84,7 +84,6 @@ requirements:
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
   run:
-    - {{ pin_compatible('utf8proc', max_pin='x') }}
     # Through run_exports
     - aws-crt-cpp
     - aws-sdk-cpp
@@ -96,6 +95,7 @@ requirements:
     - libgrpc
     - libprotobuf
     - libthrift
+    - libutf8proc
     - lz4-c
     - openssl
     - orc
