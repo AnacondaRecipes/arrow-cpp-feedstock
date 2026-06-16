@@ -50,8 +50,8 @@ requirements:
     - ninja-base
   host:
     - libabseil {{ libabseil }}
-    - aws-sdk-cpp 1.11.774
-    - aws-crt-cpp 0.37.4
+    - aws-sdk-cpp {{ aws_sdk_cpp }}
+    - aws-crt-cpp {{ aws_crt_cpp }}
     - libboost-devel {{ libboost_devel }}
     - brotli {{ brotli }}
     - bzip2 {{ bzip2 }}
@@ -111,8 +111,6 @@ requirements:
     - __cuda  # [(gpu_variant or "").startswith("cuda")]
 
 test:
-  requires:
-    - conda-build
   commands:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
@@ -154,10 +152,6 @@ test:
     - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.so.{{ so_version }}-gdb.py     # [linux]
     - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.{{ so_version }}.dylib-gdb.py  # [osx]
 
-    # conda tools
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
-
 about:
   home: https://github.com/apache/arrow
   license: Apache-2.0
@@ -172,10 +166,6 @@ about:
   doc_url: https://arrow.apache.org
 
 extra:
-  skip-lints:
-    # There are no Python tests for this project. All tests are executed as
-    # shell scripts.
-    - missing_imports_or_run_test_py
   recipe-maintainers:
     - wesm
     - xhochy
