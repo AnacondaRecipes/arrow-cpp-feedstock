@@ -4,25 +4,22 @@
 # hashes should match.
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
-{% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 4 %}
+{% set build_number = 5 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
+# see https://github.com/apache/arrow/blob/apache-arrow-23.0.1/cpp/CMakeLists.txt#L131-L145
+{% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
+  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18
 
 build:
   number: {{ build_number + 100 if cuda_enabled else build_number }}
-  {% if cuda_enabled %}
-  string: cuda{{ cuda_compiler_version | replace('.', '') }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
-  {% else %}
-  string: cpu_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
-  {% endif %}
+  string: {{ "cuda"~cuda_compiler_version | replace('.', '') if cuda_enabled else "cpu" }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -53,9 +50,9 @@ requirements:
     - ninja-base
   host:
     - libabseil {{ libabseil }}
-    - aws-sdk-cpp 1.11.774
-    - aws-crt-cpp 0.37.4
-    - boost-cpp
+    - aws-sdk-cpp {{ aws_sdk_cpp }}
+    - aws-crt-cpp {{ aws_crt_cpp }}
+    - libboost-devel {{ libboost_devel }}
     - brotli {{ brotli }}
     - bzip2 {{ bzip2 }}
     # Only required and used on Windows.
@@ -70,7 +67,7 @@ requirements:
     - libre2-11 {{ libre2_11 }}
     - snappy {{ snappy }}
     - thrift-cpp {{ libthrift }}
-    - utf8proc {{ libutf8proc }}
+    - libutf8proc {{ libutf8proc }}
     - zlib {{ zlib }}
     - zstd {{ zstd }}
     - xsimd 13.0.0
@@ -84,7 +81,6 @@ requirements:
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
   run:
-    - {{ pin_compatible('utf8proc', max_pin='x') }}
     # Through run_exports
     - aws-crt-cpp
     - aws-sdk-cpp
@@ -96,6 +92,7 @@ requirements:
     - libgrpc
     - libprotobuf
     - libthrift
+    - libutf8proc
     - lz4-c
     - openssl
     - orc
@@ -114,8 +111,6 @@ requirements:
     - __cuda  # [(gpu_variant or "").startswith("cuda")]
 
 test:
-  requires:
-    - conda-build
   commands:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
@@ -153,9 +148,9 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\arrow_cuda.lib exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
     - if not exist %PREFIX%\\Library\\include\\arrow\\gpu\\cuda_api.h exit 1       # [win and (gpu_variant or "").startswith("cuda")]
 
-    # conda tools
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
+    # gdb-wrapper (paths are stacked intentionally)
+    - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.so.{{ so_version }}-gdb.py     # [linux]
+    - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.{{ so_version }}.dylib-gdb.py  # [osx]
 
 about:
   home: https://github.com/apache/arrow
@@ -171,10 +166,6 @@ about:
   doc_url: https://arrow.apache.org
 
 extra:
-  skip-lints:
-    # There are no Python tests for this project. All tests are executed as
-    # shell scripts.
-    - missing_imports_or_run_test_py
   recipe-maintainers:
     - wesm
     - xhochy
