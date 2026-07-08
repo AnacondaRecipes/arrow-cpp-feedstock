@@ -98,7 +98,7 @@ requirements:
     - libutf8proc
     - lz4-c
     - openssl
-    - orc <2.1.0
+    - orc
     - libre2-11
     - snappy
     - zlib
