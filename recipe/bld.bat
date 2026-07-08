@@ -5,7 +5,10 @@ if defined gpu_variant (
 )
 
 mkdir "%SRC_DIR%"\cpp\build
+if errorlevel 1 exit /b 1
+
 pushd "%SRC_DIR%"\cpp\build
+if errorlevel 1 exit /b 1
 
 set BOOST_ROOT="%LIBRARY_PREFIX%"
 set Boost_ROOT="%LIBRARY_PREFIX%"
@@ -64,7 +67,17 @@ cmake -G "Ninja" ^
       -DPYTHON_EXECUTABLE="%PYTHON%" ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
       ..
+if errorlevel 1 (
+    echo Error: CMake configuration failed.
+    popd
+    exit /b 1
+)
 
 cmake --build . --target install --config Release
+if errorlevel 1 (
+    echo Error: CMake build/install failed.
+    popd
+    exit /b 1
+)
 
 popd
