@@ -81,6 +81,8 @@ requirements:
     # cuda-driver-dev only exists for linux on pkgs/main; on Windows, cuda.lib stub
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
+    # https://github.com/apache/arrow/blob/apache-arrow-24.0.0/ci/conda_env_cpp.txt#L42
+    - nodejs >=16
   run:
     # Through run_exports
     - aws-crt-cpp
@@ -96,7 +98,7 @@ requirements:
     - libutf8proc
     - lz4-c
     - openssl
-    - orc
+    - orc <2.1.0
     - libre2-11
     - snappy
     - zlib
