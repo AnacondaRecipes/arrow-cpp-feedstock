@@ -3,18 +3,18 @@
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
 {% set name = "arrow-cpp" %}
-{% set version = "23.0.1" %}
-{% set build_number = 5 %}
+{% set version = "24.0.0" %}
+{% set build_number = 0 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
-# see https://github.com/apache/arrow/blob/apache-arrow-23.0.1/cpp/CMakeLists.txt#L131-L145
+# see https://github.com/apache/arrow/blob/apache-arrow-24.0.0/cpp/CMakeLists.txt#L133-L142
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+  url: https://archive.apache.org/dist/{{ name.split('-')[0] }}/{{ name.split('-')[0] }}-{{ version }}/apache-{{ name.split('-')[0] }}-{{ version }}.tar.gz
   sha256: bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18
 
 build:
@@ -70,7 +70,8 @@ requirements:
     - libutf8proc {{ libutf8proc }}
     - zlib {{ zlib }}
     - zstd {{ zstd }}
-    - xsimd 13.0.0
+    # https://github.com/apache/arrow/blob/main/ci/conda_env_cpp.txt#L50
+    - xsimd ==14.2.0
     - libbrotlidec {{ libbrotlidec }}
     - libbrotlienc {{ libbrotlienc }}
     - libthrift {{ libthrift }}
