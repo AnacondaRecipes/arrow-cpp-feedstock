@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://archive.apache.org/dist/{{ name.split('-')[0] }}/{{ name.split('-')[0] }}-{{ version }}/apache-{{ name.split('-')[0] }}-{{ version }}.tar.gz
-  sha256: bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18
+  sha256: 9a8094d24fa33b90c672ab77fdda253f29300c8b0dd3f0b8e55a29dbd98b82c9
 
 build:
   number: {{ build_number + 100 if cuda_enabled else build_number }}
