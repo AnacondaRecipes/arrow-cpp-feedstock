@@ -87,11 +87,13 @@ requirements:
     # Through run_exports
     - aws-crt-cpp
     - aws-sdk-cpp
+    - libboost  # pinned through run_exports
     - bzip2
     - glog
     - libabseil
     - libbrotlidec
     - libbrotlienc
+    - libbrotlicommon  # pinned through run_exports
     - libgrpc
     - libprotobuf
     - libthrift
