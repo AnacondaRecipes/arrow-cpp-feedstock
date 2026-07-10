@@ -5,7 +5,10 @@ if defined gpu_variant (
 )
 
 mkdir "%SRC_DIR%"\cpp\build
+if errorlevel 1 exit /b 1
+
 pushd "%SRC_DIR%"\cpp\build
+if errorlevel 1 exit /b 1
 
 set BOOST_ROOT="%LIBRARY_PREFIX%"
 set Boost_ROOT="%LIBRARY_PREFIX%"
@@ -49,21 +52,32 @@ cmake -G "Ninja" ^
       -DARROW_WITH_BROTLI=ON ^
       -DARROW_WITH_BZ2=ON ^
       -DARROW_WITH_LZ4=ON ^
+      -DLZ4_HOME="%LIBRARY_PREFIX%" ^
       -DARROW_WITH_RE2=ON ^
       -DARROW_WITH_SNAPPY=ON ^
       -DARROW_WITH_UTF8PROC=ON ^
       -DARROW_WITH_ZLIB=ON ^
       -DARROW_WITH_ZSTD=ON ^
+      -DZSTD_HOME="%LIBRARY_PREFIX%" ^
       -DCMAKE_CXX_STANDARD=20 ^
       -DPARQUET_REQUIRE_ENCRYPTION=ON ^
-      -DCMAKE_PREFIX_PATH=%PREFIX% ^
+      -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%;%PREFIX%" ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DCMAKE_INSTALL_LIBDIR="lib" ^
-      -DZSTD_HOME="%LIBRARY_PREFIX%" ^
       -DPYTHON_EXECUTABLE="%PYTHON%" ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
       ..
+if errorlevel 1 (
+    echo Error: CMake configuration failed.
+    popd
+    exit /b 1
+)
 
 cmake --build . --target install --config Release
+if errorlevel 1 (
+    echo Error: CMake build/install failed.
+    popd
+    exit /b 1
+)
 
 popd
