@@ -4,7 +4,7 @@
 # hashes should match.
 {% set name = "arrow-cpp" %}
 {% set version = "24.0.0" %}
-{% set build_number = 0 %}
+{% set build_number = 1 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 # see https://github.com/apache/arrow/blob/apache-arrow-24.0.0/cpp/CMakeLists.txt#L133-L142
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
@@ -49,7 +49,7 @@ requirements:
     - gnuconfig
     - ninja-base
   host:
-    - libabseil {{ libabseil }}
+    - libabseil 20260526.0
     - aws-sdk-cpp {{ aws_sdk_cpp }}
     - aws-crt-cpp {{ aws_crt_cpp }}
     - libboost-devel {{ libboost_devel }}
@@ -58,11 +58,11 @@ requirements:
     # Only required and used on Windows.
     - c-ares {{ c_ares }}  # [win]
     - glog {{ glog }}
-    - libgrpc {{ libgrpc }}
+    - libgrpc 1.82.1
     - lz4-c {{ lz4_c }}
     - openssl {{ openssl }}
     - orc {{ orc }}
-    - libprotobuf {{ libprotobuf }}
+    - libprotobuf 7.35.1
     - rapidjson 1.1.0
     - libre2-11 {{ libre2_11 }}
     - snappy {{ snappy }}
