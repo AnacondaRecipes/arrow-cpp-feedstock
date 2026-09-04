@@ -4,7 +4,7 @@
 # hashes should match.
 {% set name = "arrow-cpp" %}
 {% set version = "24.0.0" %}
-{% set build_number = 0 %}
+{% set build_number = 1 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 # see https://github.com/apache/arrow/blob/apache-arrow-24.0.0/cpp/CMakeLists.txt#L133-L142
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
