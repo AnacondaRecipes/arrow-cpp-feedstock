@@ -49,7 +49,7 @@ requirements:
     - gnuconfig
     - ninja-base
   host:
-    - libabseil 20260526.0
+    - libabseil {{ libabseil }}
     - aws-sdk-cpp {{ aws_sdk_cpp }}
     - aws-crt-cpp {{ aws_crt_cpp }}
     - libboost-devel {{ libboost_devel }}
@@ -58,11 +58,11 @@ requirements:
     # Only required and used on Windows.
     - c-ares {{ c_ares }}  # [win]
     - glog {{ glog }}
-    - libgrpc 1.82.1
+    - libgrpc {{ libgrpc }}
     - lz4-c {{ lz4_c }}
     - openssl {{ openssl }}
     - orc {{ orc }}
-    - libprotobuf 7.35.1
+    - libprotobuf {{ libprotobuf }}
     - rapidjson 1.1.0
     - libre2-11 {{ libre2_11 }}
     - snappy {{ snappy }}
