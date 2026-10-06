@@ -82,18 +82,18 @@ requirements:
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
     # https://github.com/apache/arrow/blob/apache-arrow-24.0.0/ci/conda_env_cpp.txt#L42
-    - nodejs >=16
+    - nodejs 26.5.1
   run:
     # Through run_exports
     - aws-crt-cpp
     - aws-sdk-cpp
-    - libboost  # pinned through run_exports
+    - libboost  # analint: cbc_dep_in_run_missing_from_host  # host has libboost-devel; pinned through its run_exports
     - bzip2
     - glog
     - libabseil
     - libbrotlidec
     - libbrotlienc
-    - libbrotlicommon  # pinned through run_exports
+    - libbrotlicommon  # analint: cbc_dep_in_run_missing_from_host  # host has brotli; pinned through its run_exports
     - libgrpc
     - libprotobuf
     - libthrift
@@ -116,6 +116,10 @@ requirements:
     - __cuda  # [(gpu_variant or "").startswith("cuda")]
 
 test:
+  files:
+    - smoke_test.cc
+  requires:
+    - {{ compiler('cxx') }}
   commands:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
@@ -152,6 +156,12 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\arrow_cuda.dll exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
     - if not exist %PREFIX%\\Library\\lib\\arrow_cuda.lib exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
     - if not exist %PREFIX%\\Library\\include\\arrow\\gpu\\cuda_api.h exit 1       # [win and (gpu_variant or "").startswith("cuda")]
+
+    # compile, link and run a small program against the installed library
+    - ${CXX} ${CXXFLAGS} -std=c++20 smoke_test.cc -o smoke_test -I${PREFIX}/include -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib -larrow  # [unix]
+    - ./smoke_test  # [unix]
+    - cl /nologo /std:c++20 /EHsc /MD /I"%LIBRARY_INC%" smoke_test.cc /link /LIBPATH:"%LIBRARY_LIB%" arrow.lib  # [win]
+    - smoke_test.exe  # [win]
 
     # gdb-wrapper (paths are stacked intentionally)
     - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.so.{{ so_version }}-gdb.py     # [linux]
