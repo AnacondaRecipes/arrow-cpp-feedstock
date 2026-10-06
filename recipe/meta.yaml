@@ -14,8 +14,24 @@ package:
   version: {{ version }}
 
 source:
-  url: https://archive.apache.org/dist/{{ name.split('-')[0] }}/{{ name.split('-')[0] }}-{{ version }}/apache-{{ name.split('-')[0] }}-{{ version }}.tar.gz
-  sha256: 9a8094d24fa33b90c672ab77fdda253f29300c8b0dd3f0b8e55a29dbd98b82c9
+  - url: https://archive.apache.org/dist/{{ name.split('-')[0] }}/{{ name.split('-')[0] }}-{{ version }}/apache-{{ name.split('-')[0] }}-{{ version }}.tar.gz
+    sha256: 9a8094d24fa33b90c672ab77fdda253f29300c8b0dd3f0b8e55a29dbd98b82c9
+  # Sources that Arrow's CMake always builds itself and would otherwise download during the
+  # build. Versions and hashes come from cpp/thirdparty/versions.txt of this Arrow release.
+  # `fn` keeps each archive packed, because CMake verifies and extracts it; the build
+  # scripts restore the file names and pass them through ARROW_<NAME>_URL.
+  - url: https://github.com/substrait-io/substrait/archive/v0.44.0.tar.gz
+    sha256: f989a862f694e7dbb695925ddb7c4ce06aa6c51aca945105c075139aed7e55a2
+    fn: substrait-v0.44.0.tar.gz.packed
+    folder: thirdparty_archives
+  - url: https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2  # [unix]
+    sha256: 2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa                 # [unix]
+    fn: jemalloc-5.3.0.tar.bz2.packed                                                        # [unix]
+    folder: thirdparty_archives                                                              # [unix]
+  - url: https://github.com/microsoft/mimalloc/archive/v3.2.7.tar.gz             # [unix]
+    sha256: 33621bea902711639b8f83128e64685ffc8224a65443625530747603a2d8726d    # [unix]
+    fn: mimalloc-v3.2.7.tar.gz.packed                                           # [unix]
+    folder: thirdparty_archives                                                 # [unix]
 
 build:
   number: {{ build_number + 100 if cuda_enabled else build_number }}
@@ -170,7 +186,10 @@ test:
 about:
   home: https://github.com/apache/arrow
   license: Apache-2.0
-  license_file: LICENSE.txt
+  license_file:
+    - LICENSE.txt
+    # mimalloc is linked statically on unix and is not covered by Arrow's LICENSE.txt
+    - LICENSE-mimalloc.txt  # [unix]
   license_family: Apache
   summary: C++ libraries for Apache Arrow
   description: |

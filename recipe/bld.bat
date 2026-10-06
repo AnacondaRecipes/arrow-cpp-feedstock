@@ -4,6 +4,18 @@ if defined gpu_variant (
     echo %gpu_variant% | findstr /b "cuda" >nul && set "ARROW_CUDA=ON"
 )
 
+@rem Use the Substrait archive declared in meta.yaml so that CMake does not download it.
+for %%f in ("%SRC_DIR%\thirdparty_archives\*.packed") do ren "%%f" "%%~nf"
+if errorlevel 1 exit /b 1
+set "ARROW_SUBSTRAIT_URL="
+for %%f in ("%SRC_DIR%\thirdparty_archives\substrait-*.tar.gz") do set "ARROW_SUBSTRAIT_URL=%%f"
+if not defined ARROW_SUBSTRAIT_URL (
+    echo Error: Substrait source archive not found.
+    exit /b 1
+)
+@rem CMake needs forward slashes in the path
+set "ARROW_SUBSTRAIT_URL=%ARROW_SUBSTRAIT_URL:\=/%"
+
 mkdir "%SRC_DIR%"\cpp\build
 if errorlevel 1 exit /b 1
 

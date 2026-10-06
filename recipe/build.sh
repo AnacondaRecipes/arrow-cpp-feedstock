@@ -9,6 +9,19 @@ else
     ARROW_CUDA=OFF
 fi
 
+# Use the archives declared in meta.yaml so that CMake does not download them.
+for packed in "${SRC_DIR}"/thirdparty_archives/*.packed; do
+    mv "${packed}" "${packed%.packed}"
+done
+export ARROW_SUBSTRAIT_URL=$(echo "${SRC_DIR}"/thirdparty_archives/substrait-*.tar.gz)
+export ARROW_JEMALLOC_URL=$(echo "${SRC_DIR}"/thirdparty_archives/jemalloc-*.tar.bz2)
+export ARROW_MIMALLOC_URL=$(echo "${SRC_DIR}"/thirdparty_archives/mimalloc-*.tar.gz)
+
+# mimalloc is linked statically; ship its license next to Arrow's.
+mkdir mimalloc_license
+tar -xzf "${ARROW_MIMALLOC_URL}" -C mimalloc_license --strip-components=1
+cp mimalloc_license/LICENSE "${SRC_DIR}/LICENSE-mimalloc.txt"
+
 mkdir cpp/build
 pushd cpp/build
 
