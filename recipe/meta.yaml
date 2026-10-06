@@ -82,7 +82,7 @@ requirements:
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
     # https://github.com/apache/arrow/blob/apache-arrow-24.0.0/ci/conda_env_cpp.txt#L42
-    - nodejs 26.5.1
+    - nodejs 20.20.2
   run:
     # Through run_exports
     - aws-crt-cpp
