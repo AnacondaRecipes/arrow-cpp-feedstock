@@ -185,12 +185,13 @@ test:
 
 about:
   home: https://github.com/apache/arrow
-  license: Apache-2.0
+  # unix builds link mimalloc (MIT) statically; Windows does not build it
+  license: {{ "Apache-2.0 AND MIT" if unix else "Apache-2.0" }}
   license_file:
     - LICENSE.txt
-    # mimalloc is linked statically on unix and is not covered by Arrow's LICENSE.txt
+    # mimalloc is not covered by Arrow's LICENSE.txt
     - LICENSE-mimalloc.txt  # [unix]
-  license_family: Apache
+  license_family: {{ "Other" if unix else "Apache" }}
   summary: C++ libraries for Apache Arrow
   description: |
     Apache Arrow defines a language-independent columnar memory format
