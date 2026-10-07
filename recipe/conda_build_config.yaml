@@ -1,11 +1,13 @@
 gpu_variant:
   - none
-  - cuda-12                         # [win or linux]
+  - cuda-12                         # [linux or (win and x86_64)]
   - cuda-13                         # [win or linux]
 cuda_compiler_version:
   - none
-  - 12.9                            # [win or linux]
-  - 13.0                            # [win or linux]
+  - 12.9                            # [linux or (win and x86_64)]
+  - 13.0                            # [linux or (win and x86_64)]
+  # win-arm64: CUDA 13.4 is the only toolkit NVIDIA ships for Windows on Arm
+  - 13.4                            # [win and arm64]
 
 # cuda_compiler (cuda-nvcc) inherited from aggregate CBC — not redefined here.
 # No GCC downgrade needed: Arrow does not compile .cu files (no nvcc invocation).
