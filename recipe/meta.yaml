@@ -3,10 +3,10 @@
 # component/backend, `pyarrow` has the Python libraries. Also, the SHA-256
 # hashes should match.
 {% set name = "arrow-cpp" %}
-{% set version = "24.0.0" %}
-{% set build_number = 3 %}
+{% set version = "26.0.0" %}
+{% set build_number = 0 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
-# see https://github.com/apache/arrow/blob/apache-arrow-24.0.0/cpp/CMakeLists.txt#L133-L142
+# see https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/CMakeLists.txt#L133-L142
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
 
 package:
@@ -15,7 +15,7 @@ package:
 
 source:
   - url: https://archive.apache.org/dist/{{ name.split('-')[0] }}/{{ name.split('-')[0] }}-{{ version }}/apache-{{ name.split('-')[0] }}-{{ version }}.tar.gz
-    sha256: 9a8094d24fa33b90c672ab77fdda253f29300c8b0dd3f0b8e55a29dbd98b82c9
+    sha256: b153ef472dd89ef4cb84867ca238f2a3a9347d8f4a78913d16ca2201606f0425
   # Sources that Arrow's CMake always builds itself and would otherwise download during the
   # build. Versions and hashes come from cpp/thirdparty/versions.txt of this Arrow release.
   # `fn` keeps each archive packed, because CMake verifies and extracts it; the build
@@ -28,9 +28,9 @@ source:
     sha256: 2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa                 # [unix]
     fn: jemalloc-5.3.0.tar.bz2.packed                                                        # [unix]
     folder: thirdparty_archives                                                              # [unix]
-  - url: https://github.com/microsoft/mimalloc/archive/v3.2.7.tar.gz             # [unix]
-    sha256: 33621bea902711639b8f83128e64685ffc8224a65443625530747603a2d8726d    # [unix]
-    fn: mimalloc-v3.2.7.tar.gz.packed                                           # [unix]
+  - url: https://github.com/microsoft/mimalloc/archive/v3.4.1.tar.gz             # [unix]
+    sha256: 37107a52c16baa80c5f74861dddda7b27bb9949e41a6637691867a94c88ca446    # [unix]
+    fn: mimalloc-v3.4.1.tar.gz.packed                                           # [unix]
     folder: thirdparty_archives                                                 # [unix]
 
 build:
@@ -97,8 +97,16 @@ requirements:
     # cuda-driver-dev only exists for linux on pkgs/main; on Windows, cuda.lib stub
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
-    # https://github.com/apache/arrow/blob/apache-arrow-24.0.0/ci/conda_env_cpp.txt#L42
+    # https://github.com/apache/arrow/blob/apache-arrow-26.0.0/ci/conda_env_cpp.txt#L42
+    # The stricter pin is for win-arm64 support
     - nodejs 20.20.2
+    # https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L2901
+    - simdjson {{ simdjson }} # >=4.3.0
+    # vendored uriparser version is 1.0.2, but minimum version is 0.9.6. For builds we will add
+    # 1.0.2, but leave a run dependency of  >=0.9.6.
+    # vendored version: https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/thirdparty/versions.txt#L115
+    # min version: https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L3334-L3341
+    - uriparser 1.0.2
   run:
     # Through run_exports
     - aws-crt-cpp
@@ -122,6 +130,7 @@ requirements:
     - zlib
     - zstd
     - c-ares  # [win]
+    - uriparser >=0.9.6
     # CUDA runtime dependencies
     - {{ pin_compatible('cuda-version', max_pin='x.x') }}  # [(gpu_variant or "").startswith("cuda")]
   run_constrained:
@@ -165,6 +174,11 @@ test:
     - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if exist %PREFIX%\\Library\\lib\\arrow_flight_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
+
+    # split s3 library (libarrow_s3)
+    - test -f $PREFIX/lib/libarrow_s3${SHLIB_EXT}                   # [unix]
+    - if not exist %PREFIX%\\Library\\bin\\arrow_s3.dll exit 1       # [win]
+    - if not exist %PREFIX%\\Library\\lib\\arrow_s3.lib exit 1       # [win]
 
     # CUDA shared libraries and headers
     - test -f $PREFIX/lib/libarrow_cuda${SHLIB_EXT}                                # [unix and (gpu_variant or "").startswith("cuda")]

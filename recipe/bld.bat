@@ -22,8 +22,13 @@ if errorlevel 1 exit /b 1
 pushd "%SRC_DIR%"\cpp\build
 if errorlevel 1 exit /b 1
 
+@rem Arrow 26 added /Zc:preprocessor (apache/arrow#50979). Boost 1.88's
+@rem multiprecision literals (BOOST_JOIN(""_cppi, Bits)) don't compile with it;
+@rem fixed in Boost 1.89. Revert to the traditional preprocessor until libboost >=1.89.
+set "ARROW_CXXFLAGS_WIN=/Zc:preprocessor-"
+
 @rem rapidjson 1.1.0 does not recognise MSVC _M_ARM64 when detecting endianness
-if /i "%target_platform%"=="win-arm64" set "CMAKE_ARGS=%CMAKE_ARGS% -DARROW_CXXFLAGS=/DRAPIDJSON_ENDIAN=RAPIDJSON_LITTLEENDIAN"
+if /i "%target_platform%"=="win-arm64" set "ARROW_CXXFLAGS_WIN=%ARROW_CXXFLAGS_WIN% /DRAPIDJSON_ENDIAN=RAPIDJSON_LITTLEENDIAN"
 
 set BOOST_ROOT="%LIBRARY_PREFIX%"
 set Boost_ROOT="%LIBRARY_PREFIX%"
@@ -81,6 +86,7 @@ cmake -G "Ninja" ^
       -DCMAKE_INSTALL_LIBDIR="lib" ^
       -DPYTHON_EXECUTABLE="%PYTHON%" ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
+      -DARROW_CXXFLAGS="%ARROW_CXXFLAGS_WIN%" ^
       ..
 if errorlevel 1 (
     echo Error: CMake configuration failed.
