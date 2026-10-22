@@ -6,7 +6,7 @@
 {% set version = "26.0.0" %}
 {% set build_number = 0 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
-# see https://github.com/apache/arrow/blob/apache-arrow-24.0.0/cpp/CMakeLists.txt#L133-L142
+# see https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/CMakeLists.txt#L133-L142
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
 
 package:
@@ -97,7 +97,8 @@ requirements:
     # cuda-driver-dev only exists for linux on pkgs/main; on Windows, cuda.lib stub
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
     - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
-    # https://github.com/apache/arrow/blob/apache-arrow-24.0.0/ci/conda_env_cpp.txt#L42
+    # https://github.com/apache/arrow/blob/apache-arrow-26.0.0/ci/conda_env_cpp.txt#L42
+    # The stricter pin is for win-arm64 support
     - nodejs 20.20.2
     # https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L2901
     - simdjson {{ simdjson }} # >=4.3.0
