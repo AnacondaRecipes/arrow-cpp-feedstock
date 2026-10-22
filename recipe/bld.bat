@@ -86,7 +86,7 @@ cmake -G "Ninja" ^
       -DCMAKE_INSTALL_LIBDIR="lib" ^
       -DPYTHON_EXECUTABLE="%PYTHON%" ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
-      -DDARROW_CXXFLAGS="%ARROW_CXXFLAGS_WIN%" ^
+      -DARROW_CXXFLAGS="%ARROW_CXXFLAGS_WIN%" ^
       ..
 if errorlevel 1 (
     echo Error: CMake configuration failed.
