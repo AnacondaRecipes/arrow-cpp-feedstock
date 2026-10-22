@@ -28,7 +28,7 @@ if errorlevel 1 exit /b 1
 set "ARROW_CXXFLAGS_WIN=/Zc:preprocessor-"
 
 @rem rapidjson 1.1.0 does not recognise MSVC _M_ARM64 when detecting endianness
-if /i "%target_platform%"=="win-arm64" set "CMAKE_ARGS=%CMAKE_ARGS% -DARROW_CXXFLAGS=/DRAPIDJSON_ENDIAN=RAPIDJSON_LITTLEENDIAN"
+if /i "%target_platform%"=="win-arm64" set "ARROW_CXXFLAGS_WIN=%ARROW_CXXFLAGS_WIN% /DRAPIDJSON_ENDIAN=RAPIDJSON_LITTLEENDIAN"
 
 set BOOST_ROOT="%LIBRARY_PREFIX%"
 set Boost_ROOT="%LIBRARY_PREFIX%"
