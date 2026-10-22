@@ -102,10 +102,11 @@ requirements:
     - nodejs 20.20.2
     # https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L2901
     - simdjson {{ simdjson }} # >=4.3.0
-    # vendored uriparser version is 1.0.2, but minimum version is 0.9.6
+    # vendored uriparser version is 1.0.2, but minimum version is 0.9.6. For builds we will add
+    # 1.0.2, but leave a run dependency of  >=0.9.6.
     # vendored version: https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/thirdparty/versions.txt#L115
-    # min version: https://github.com/apache/arrow/blob/373d64c02cb23663b63c5853099fca43a46c39fc/cpp/cmake_modules/ThirdpartyToolchain.cmake#L3322
-    - uriparser >=0.9.6
+    # min version: https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L3334-L3341
+    - uriparser 1.0.2
   run:
     # Through run_exports
     - aws-crt-cpp
@@ -173,6 +174,11 @@ test:
     - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if exist %PREFIX%\\Library\\lib\\arrow_flight_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
+
+    # split s3 library (libarrow_s3)
+    - test -f $PREFIX/lib/libarrow_s3${SHLIB_EXT}                   # [unix]
+    - if not exist %PREFIX%\\Library\\bin\\arrow_s3.dll exit 1       # [win]
+    - if not exist %PREFIX%\\Library\\lib\\arrow_s3.lib exit 1       # [win]
 
     # CUDA shared libraries and headers
     - test -f $PREFIX/lib/libarrow_cuda${SHLIB_EXT}                                # [unix and (gpu_variant or "").startswith("cuda")]
