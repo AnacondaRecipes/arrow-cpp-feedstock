@@ -100,7 +100,7 @@ requirements:
     # https://github.com/apache/arrow/blob/apache-arrow-24.0.0/ci/conda_env_cpp.txt#L42
     - nodejs 20.20.2
     # https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L2901
-    - simdjson >=4.3.0
+    - simdjson {{ simdjson }} # >=4.3.0
     # vendored uriparser version is 1.0.2, but minimum version is 0.9.6
     # vendored version: https://github.com/apache/arrow/blob/apache-arrow-26.0.0/cpp/thirdparty/versions.txt#L115
     # min version: https://github.com/apache/arrow/blob/373d64c02cb23663b63c5853099fca43a46c39fc/cpp/cmake_modules/ThirdpartyToolchain.cmake#L3322
